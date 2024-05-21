@@ -1,23 +1,58 @@
 # Problem (link):- https://leetcode.com/problems/contains-duplicate/description/
 
-# TC - O(n) SC - O(n)
-
 # My Note-
 # 1- The question clearly gives the hint to use set since only then the duplicates are going to be removed automatically
 # 2- TC - O(n) since using the set function will have to go through all the values of the nums list in order to see whats repeating
 # and whats not atleast once. SC - O(n) in the worst case scenario there are not any duplicates and therefore the size of set will be
 # the same as the size of the nums list and so the set will have n elements space required.
 
+# Solution 1: # TC - O(n^2) SC - O(1)
+class Solution:
+    def containsDuplicate(self, nums: List[int]) -> bool:
+        n = len(nums)
+        for i in range(n - 1):
+            for j in range(i + 1, n):
+                if nums[i] == nums[j]:
+                    return True
+        return False
+
+
+# Solution 2: # TC - O(n) SC - O(n)
 class Solution:
     def containsDuplicate(self, nums: List[int]) -> bool:
         return len(set(nums)) != len(nums)
 
+# Solution 3: # TC - O(nlogn) SC - O(1)
+class Solution:
+    def containsDuplicate(self, nums: List[int]) -> bool:
+        nums.sort()
+        n = len(nums)
+        for i in range(1, n):
+            if nums[i] == nums[i - 1]:
+                return True
+        return False
+# Solution 4: # TC - O(n) SC - O(n)
+class Solution:
+    def containsDuplicate(self, nums: List[int]) -> bool:
+        seen = set()
+        for num in nums:
+            if num in seen:
+                return True
+            seen.add(num)
+        return False
+
 # Solution Methods:-
-    # 1- A naive approach where you simply put a pointer in the first place made a loop through the list
-    # and went on until i found another element which is the same as the one already gone through and as soon as i found one i printed true
-    # and if didnt find it even after traversing through the entire list then i printed false.
+    # 1- A naive approach where you simply traverse the list using a loop and go on until you find another element which is the same as the
+    # one are currently on as soon as you find this you print true because you found a duplicate.
+    # and if you don't find it even after traversing through the entire list then you print false.
 
     # 2- Used set in python which helps eliminate duplicates afer this the length would just tell you if there were duplicates or not
+
+    # 3-If we sort then numbers beside each other should have the same value and so we can leverage this fact to check if it has any duplicates next to each element.
+
+    # 4-Hash-set where you put all the values one by one into a hash table data structure and check for each value in the list you are looping through if its also
+    # present in the hash table and if it is then you have foudna duplicate and can truen True or otherwise return False if the entire list has been traversed and
+    # no duplicate has been found.
 
 # Thoughts on the Problem and Challenges:-
     # USAGE OF SET DATA STRUCTURE
