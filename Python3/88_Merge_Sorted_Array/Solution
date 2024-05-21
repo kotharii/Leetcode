@@ -24,6 +24,25 @@ class Solution:
                 nums1[n+m-1] = nums1[m-1]
                 m -= 1
 
+# Solution 1.2: #Just another way to write the above solution  TC - O(m+n) SC - O(1)
+# class Solution:
+    # def merge(self, nums1: List[int], m: int, nums2: List[int], n: int) -> None:
+        # num1nums = m-1
+        # num1placeholders = m+n-1
+        # num2nums = n-1
+        # while num2nums >= 0:
+        #     if num1nums < 0:
+        #         nums1[:num1placeholders+1] = nums2[:num2nums+1]
+        #         break
+        #     else: 
+        #         if nums2[num2nums] >= nums1[num1nums]:
+        #             nums1[num1placeholders] = nums2[num2nums]
+        #             num2nums -= 1
+        #         else:
+        #             nums1[num1placeholders] = nums1[num1nums]
+        #             num1nums -= 1
+        #     num1placeholders -= 1
+
 # Solution Methods:-
     # 1- In this approach we are taking advantage of the fact that the elements in both the list's are in non-decreasing order so we compare all the elements from
     # last to first between both the lists and whichever has the higher value will be placed starting from m+n position while m and n will be constantly decreased
