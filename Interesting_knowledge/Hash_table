@@ -1,0 +1,38 @@
+WHAT IS A HASH TABLE:-
+Hashing Algorithm also known as a hash function
+is the calculation applied to a key
+which may be a very large number or a
+very long string to transform it into a
+relatively small indexed number that
+corresponds to a position in the hash
+table this index number is effectively a
+memory address for numeric keys it's
+common to take the key and divide it by
+the number of available addresses and
+take the remainder we say that the
+address is the key modulo n where n is
+the number of available addresses as
+you've seen for alphanumeric keys we can
+divide the sum of the ASCII codes in the
+key by the number of available addresses
+and take the remainder another method
+that can be employed is known as the
+folding method. How it is used example:
+name(key): 'Mia' so you take ASCII Values of the letter M, I and then A. add these ASCII values and then divide it by the number of spaces(addresses) you have in the linkedlist array. if they are for example 10 then you divide the summed number by 10 and then take the remainder and at that index position you put the name mia in that linkedlist array. So next time you perform this on the key and therefore get the value, thus faster than the List searching method. 
+
+WHAT ACTUALLY HAPPENS IN A HASH TABLE:-
+for exaple:-
+1- MIA (ASCII value of M=11, I=6, A=33) = 11+6+33 = 50
+Array to be put in size is 0 to 10 so total 11. 
+50/11 = 4, remainder = 6. Put MIA (key value) in position 6 in the array. 6 is the index at which mia will be kept. So next time when a person wants to search for mia this method of mathematics is applied on the key which is MIA itself and thus as a result they are able to directly find the index and thus the value of that key value pair.
+
+ONCE YOU HAVE UNDERSTOOD THE ABOVE OF HOW HASH TABLE WORKS THERE IS, WHAT ARE COLLISIONS AND HOW DO THEY DECREASE EFFICIENCY:
+1- if two key words have the same remainder means they have the same index, thus collision, how can one save two different words at the same index in the array, thus they rather save the word that came the second time in a place in the array after the first place they look for by the index. For example MIA was saved at place 6, now SUE also has a remainder 6 then SUE will be kept at the position after 6 which is empty in the array. For example if 6 and 7 positons are taken by some other key words then SUE will be stored at index 8.
+
+
+MOST EFFICIENT METHOD OF HASH TABLE IS - PREVENT COLLISIONS:
+1- save the words that have the same remainder as one before in a linked list attached to that same index. like this:-
+  LOOK TO THE RIGHT!!
+  Look at the hash_table image.
+
+  
