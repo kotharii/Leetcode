@@ -21,7 +21,7 @@ folding method. How it is used example:
 name(key): 'Mia' so you take ASCII Values of the letter M, I and then A. add these ASCII values and then divide it by the number of spaces(addresses) you have in the linkedlist array. if they are for example 10 then you divide the summed number by 10 and then take the remainder and at that index position you put the name mia in that linkedlist array. So next time you perform this on the key and therefore get the value, thus faster than the List searching method. 
 
 WHAT ACTUALLY HAPPENS IN A HASH TABLE:-
-for exaple:-
+for example:-
 1- MIA (ASCII value of M=11, I=6, A=33) = 11+6+33 = 50
 Array to be put in size is 0 to 10 so total 11. 
 50/11 = 4, remainder = 6. Put MIA (key value) in position 6 in the array. 6 is the index at which mia will be kept. So next time when a person wants to search for mia this method of mathematics is applied on the key which is MIA itself and thus as a result they are able to directly find the index and thus the value of that key value pair.
