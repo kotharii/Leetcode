@@ -18,7 +18,7 @@ class Solution:
         # 1- it is a hash table data structure so to find the element is quicker
         # 2- it eliminates the duplicates for you in the first place.
 
-# Learnings for an absolute Beginner:-
+# Learnings for a beginner in this problem:-
     # 1- sets are hash table data structures
     # 2- sets eliminates duplicate values for you
     # 3- set has various inbuilt functions like:
