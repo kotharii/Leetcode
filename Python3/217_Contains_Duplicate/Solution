@@ -1,6 +1,13 @@
 # Problem (link):- https://leetcode.com/problems/contains-duplicate/description/
 
 # TC - O(n) SC - O(n)
+
+# My Note-
+# 1- The question clearly gives the hint to use set since only then the duplicates are going to be removed automatically
+# 2- TC - O(n) since using the set function will have to go through all the values of the nums list in order to see whats repeating
+# and whats not atleast once. SC - O(n) in the worst case scenario there are not any duplicates and therefore the size of set will be
+# the same as the size of the nums list and so the set will have n elements space required.
+
 class Solution:
     def containsDuplicate(self, nums: List[int]) -> bool:
         return len(set(nums)) != len(nums)
