@@ -1,0 +1,25 @@
+# Problem (link):- https://leetcode.com/problems/contains-duplicate/description/
+
+# TC - O(n) SC - O(n)
+class Solution:
+    def containsDuplicate(self, nums: List[int]) -> bool:
+        return len(set(nums)) != len(nums)
+
+# Solution Methods:-
+    # 1- A naive approach where you simply put a pointer in the first place made a loop through the list
+    # and went on until i found another element which is the same as the one already gone through and as soon as i found one i printed true
+    # and if didnt find it even after traversing through the entire list then i printed false.
+
+    # 2- Used set in python which helps eliminate duplicates afer this the length would just tell you if there were duplicates or not
+
+# Thoughts on the Problem and Challenges:-
+    # USAGE OF SET DATA STRUCTURE
+    # FOR 2 REASONS THEY ARE GREAT TO USE HERE:
+        # 1- it is a hash table data structure so to find the element is quicker
+        # 2- it eliminates the duplicates for you in the first place.
+
+# Learnings for an absolute Beginner:-
+    # 1- sets are hash table data structures
+    # 2- sets eliminates duplicate values for you
+    # 3- set has various inbuilt functions like:
+    # add, update, difference, remove, intersection, etc
