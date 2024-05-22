@@ -1,0 +1,55 @@
+# Problem (link):- https://leetcode.com/problems/longest-common-subsequence/description/
+
+# Notes-
+# 1- This is a bit of a thinker unless obviously you have heard about it before, but once you realize that you have no option but will have to explore the entire
+#  solution space in order to find the solution it'll come to you instantly that its dynamic programming.
+# 2- # TC- O(nm) for looping over the text1 and text2 characters in a nested loop 
+# SC- O(nm) for the space opt requires to accomodate all the optimal values.
+
+# TC- O(nm) SC- O(nm)
+class Solution:
+    def longestCommonSubsequence(self, text1: str, text2: str) -> int:
+        n = len(text1)
+        m = len(text2)
+        opt = [[0 for _ in range(m+1)] for _ in range(n+1)]
+
+        for i in range(1,n+1):
+            for j in range(1,m+1):
+                if text1[i-1] == text2[j-1]:
+                    opt[i][j] = opt[i-1][j-1] + 1
+                else:
+                    opt[i][j] = max(opt[i-1][j], opt[i][j-1])
+        return opt[n][m]
+
+# TC - O(n+m*k*logm) SC - O(n+m)
+class Solution:
+    def longestCommonSubsequence(self, text1: str, text2: str) -> int:
+        pos = defaultdict(list) #SC -O(n) n = len(text1)
+        for i, c in enumerate(text1): #TC - O(n) 
+            pos[c].append(i)
+
+        lcs = [inf] * len(text2) #SC - O(m) m = len(text2)
+
+        for c in text2: #TC - O(m)
+            for i in reversed(pos[c]): #TC - O(k) where k determines the average frequency of each character in text1
+                lcs[bisect_left(lcs, i)] = i #TC- O(log p) p = current legth of lcs array, max m
+
+        return bisect_left(lcs, inf) #TC - O(log m)
+
+# Solution Methods:-
+    # 1- Created an optimal 2D array to store the values for the number of longest common subsequence that have existed while looping over text1 and text2 characters.
+    
+    # 2- This is a very unique approach, which took me a great amount of time to come up with, it looks like it taking more time but it really comes down upon the
+    #  number of repititions there will be in the existsing text1, the lesser the repititions the better the time complexity. Will give a much better performance
+    #  than a traditional O(mn) approach time complexity.
+
+# Thoughts on the Problem and Challenges:-
+    # how to do dynamic programming
+
+# Learnings for a beginner in this problem:-
+    # 1- Learn how to use Dynamic Programming, understand that the only way to come up with a solution is to search the entire solution space and the most efficient
+    #  way to do that is only DP.
+    # 2- 
+
+# Date - 22/05/24
+# Time - 20 mins
