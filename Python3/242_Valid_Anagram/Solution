@@ -1,0 +1,59 @@
+# Problem (link):- https://leetcode.com/problems/valid-anagram/description/
+
+# Notes-
+# 1- The question is really stright forward and directly just asks you to compare the letters of the strings and that is the only way you can know if the string is
+#  an anagram of another or not. Now in such a scenario you must think as to what can be the most efficient way of comparing the letters in the strings.
+# 2- TC - O(n) since time complexity is for the 3 loops we are making through the strings of s and t in order to calculate their frequencies. rememeber ignoring 
+# constants so if someone is thinking why not 3n then 3n will eventually become O(n) after ignoring constants.
+# SC - O(n) for storing each of the letter in the dictionary in the case where each letter in both the strings are unique.
+
+# Solution 1: # TC* - O(n) SC - O(n)
+class Solution:
+    def isAnagram(self, s: str, t: str) -> bool:
+        if len(s) == len(t):
+            checker = {}
+            for i in range(len(s)):
+                if s[i] in checker:
+                    checker[s[i]] += 1
+                else:
+                    checker[s[i]] = 1
+            for i in range(len(t)):
+                if t[i] in checker:
+                    checker[t[i]] -= 1
+                else:
+                    return False
+            for i in range(len(s)):
+                if checker[s[i]] != 0:
+                    return False
+            return True
+        else:
+            return False
+
+
+# Solution 2: # TC - O(nlogn) SC - O(1)
+class Solution:
+    def isAnagram(self, s: str, t: str) -> bool:
+        sorted_s = sorted(s)
+        sorted_t = sorted(t)
+        return sorted_s == sorted_t
+
+# Solution Methods:-
+    # 2- A naive approach where you simply just sort both the strings and then compare them and if it the same it will return True where it'll compare the letters
+    #  in both the strings are same and at the same indices.
+    #  Though this isnt the worst approach, your time complexity does take a hit but in return your space complexity become O(1) from O(n) so if your requirement
+    #  for it is to be space efficient more than time efficient this is the approach you would go for.
+
+    # 1- since you know you will have to compare the letters of the strings and that is the only way you can know if the string is
+    #  an anagram of another or not. Now in such a scenario you must think as to what can be the most efficient way of comparing the letters in the strings. what better
+    #  method than a dictionary, hash table and so O(1) TC.
+
+# Thoughts on the Problem and Challenges:-
+    # USAGE OF Dictionary for fast searching
+
+# Learnings for a beginner in this problem:-
+    # 1- dictionary are hash table data structures
+    # 2- why to choose dictionary
+
+
+# Date - 21/05/24
+# Time - 2 mins
