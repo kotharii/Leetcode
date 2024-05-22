@@ -64,3 +64,8 @@ class Solution:
 # Learnings for a beginner in this problem:-
     # 1- understand indexing in a list very well
     # 2- why starting from the back and moving towards the front.
+    # ***** # 3- Understanding that slicing and juts putting the array in place is BETTER than keeping the loop running an everytime it decrements the value of m by 1
+    #  and continuing till the entire nums2 gets over. since slicing would break the loop quicker and save time. #*****
+
+# Date - 21/05/24
+# Time - 15 mins (wasted a lot of time thinking about the most efficient way to declare the if conditions so as to keep the minimum amount of conditions)
