@@ -28,7 +28,13 @@ class Solution:
             return True
         else:
             return False
-
+        
+# Solution 1.2: # TC - O(n) SC - O(n)
+class Solution:
+    from collections import Counter
+    def isAnagram(self, s: str, t: str) -> bool:
+        return Counter(s) == Counter(t)
+        
 
 # Solution 2: # TC - O(nlogn) SC - O(1)
 class Solution:
@@ -38,14 +44,16 @@ class Solution:
         return sorted_s == sorted_t
 
 # Solution Methods:-
+    # 1- since you know you will have to compare the letters of the strings and that is the only way you can know if the string is
+    #  an anagram of another or not. Now in such a scenario you must think as to what can be the most efficient way of comparing the letters in the strings. what better
+    #  method than a dictionary, hash table and so O(1) TC.
+
+    #1.2 - does the same thing as solution 1 just is a concise way to do it.
+    
     # 2- A naive approach where you simply just sort both the strings and then compare them and if it the same it will return True where it'll compare the letters
     #  in both the strings are same and at the same indices.
     #  Though this isnt the worst approach, your time complexity does take a hit but in return your space complexity become O(1) from O(n) so if your requirement
     #  for it is to be space efficient more than time efficient this is the approach you would go for.
-
-    # 1- since you know you will have to compare the letters of the strings and that is the only way you can know if the string is
-    #  an anagram of another or not. Now in such a scenario you must think as to what can be the most efficient way of comparing the letters in the strings. what better
-    #  method than a dictionary, hash table and so O(1) TC.
 
 # Thoughts on the Problem and Challenges:-
     # USAGE OF Dictionary for fast searching
