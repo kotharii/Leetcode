@@ -1,0 +1,53 @@
+# Problem (link):- https://leetcode.com/problems/two-sum/description/
+
+# Notes-
+# 1- The question clearly gives the hint that there exists exactly one solution, so you definitely know that there will be no case when target - nums[i] would not be
+#  present in the nums list (where nums[i] is the current calue you are pointing to).
+# 2- TC - O(n) since time complexity for this is O(n) for looping through all the values in the nums array in the worst case scenario and O(1) to find the indice of
+#  the element which is target - nums[i] in the dictionary so overall O(n)
+# *** Mind this that in Computer Science since we considered collisions to be almost none when using a hash table that is why we say it can find the elements in O(1)
+#  time complexity but in the worst case scenario it can get till O(n) and make the time complexity for this solution to be O(n^2) where collision is equal to the
+#  number of elements present in the nums list.
+# SC - O(n) in the worst case scenario where the nums[i] and the target - nums[i] is present at the last and second last indices.
+
+# Solution 1: # TC* - O(n) SC - O(n) * in TC indicated that it can still be O(n^2)
+class Solution:
+    def twoSum(self, nums: List[int], target: int) -> List[int]:
+        checker = {}
+        for i in range(len(nums)):
+            if target - nums[i] in checker:
+                return [i, checker[target - nums[i]]]
+            else:
+                checker[nums[i]] = i
+
+
+# Solution 2: # TC - O(n^2) SC - O(1)
+class Solution:
+    def twoSum(self, nums: List[int], target: int) -> List[int]:
+        n = len(nums)
+        for i in range(len(nums) - 1):
+            for j in range(i + 1, n):
+                if nums[i] + nums[j] == target:
+                    return [i, j]
+
+# Solution Methods:-
+    # 2- A naive approach where you simply traverse the list using a loop to pick the first element and then put another loop inside of it to go on until you find
+    #  the target - first element in the list.
+    #  Though this isnt the worst approach, your time complexity does take a huge hit but in return your space complexity become O(1) from O(n) so if your requirement
+    #  for it is to be space efficient more than time efficient this is the approach you would go for.
+
+    # 1- Since you realize that you will have to look through the other numbers after having considered one number in order to find the target - nums[i] element, 
+    # so you in return try to make this search faster and what better way to make this search faster than using a hash table.
+
+# Thoughts on the Problem and Challenges:-
+    # USAGE OF Hash Table
+
+# Learnings for a beginner in this problem:-
+    # 1- sets and dictionary are hash table data structures
+    # 2- why to choose hash over set
+    # 3- learning how hash tables work
+    # 4- understanding what are collisions in hash tables and why can the worst case TC go to O(n^2) even with hash tables.
+
+
+# Date - 21/05/24
+# Time - 1 min
