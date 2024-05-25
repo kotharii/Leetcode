@@ -1,0 +1,101 @@
+# Problem (link):- https://leetcode.com/problems/longest-common-subsequence/description/
+
+# Notes-
+# 1- This is a very simple sum, as soon as it strikes you that you can use the order of the numbers in order to rank the players, it's really straightforward.
+# 2- for the approach where we find the answer in O(w) is a pseudo polynomial time complexity solution which would be better ONLY if the maximum value in the score
+#  list is less than 4 log 10 * 10^4, otherwise the the one where we do sorting and solve it in nlogn time complexity would prove to be faster. 
+
+# TC - O(w) where w = max score value + 1 SC- O(w) where w = max score value + 1 -->using UNIQUE property
+class Solution:
+    def findRelativeRanks(self, score: List[int]) -> List[str]:
+        maximum = max(score)
+        rank = [-1] * (maximum + 1)
+        for i in range(len(score)):
+            rank[score[i]] = i
+        medals = ["Gold Medal", "Silver Medal", "Bronze Medal"]
+        answer = [0] * len(score)
+        current_rank = 1
+        for i in range(len(rank)-1, -1, -1):
+            if rank[i] != -1:
+                if current_rank < 4:
+                    answer[rank[i]] = medals[current_rank - 1]
+                    current_rank += 1
+                else:
+                    answer[rank[i]] = f"{current_rank}"
+                    current_rank += 1
+        return answer
+    
+# TC - O(nlogn) insertion into heap O(nlogn) deletion from heap. SC - O(n) --> MAX-HEAP
+class Solution:
+    import heapq
+    def findRelativeRanks(self, score: List[int]) -> List[str]:
+        heap = []
+        for index, value in enumerate(score):
+            heapq.heappush(heap, (-value, index))
+        answer = [0] * len(score)
+        medals = ["Gold Medal", "Silver Medal", "Bronze Medal"]
+        for i in range(len(score)):
+            if i < 3:
+                value, index = heapq.heappop(heap)
+                answer[index] = medals[i]
+            else:
+                value, index = heapq.heappop(heap)
+                answer[index] = f"{i+1}"
+        return answer
+
+
+# TC - O(nlogn) SC- O(n) --> sorting
+class Solution:
+    def findRelativeRanks(self, score: List[int]) -> List[str]:
+        position = {}
+        for i in range(len(score)):
+            position[score[i]] = i
+        score.sort(reverse = True)
+        medals = ["Gold Medal", "Silver Medal", "Bronze Medal"]
+        answer = [0] * len(score)
+        for i in range(len(score)):
+            if i < 3:
+                answer[position[score[i]]] = medals[i]
+            else:
+                answer[position[score[i]]] = f"{i+1}"
+        return answer
+
+# Solution Methods:-
+    # 1- This is the approach where we need to understand how can we take the advantage of the situation that all score values are unique, once you give it a thought
+    #  you can easily understand that using space we can reduce time complexity from O(nlogn) to O(w). in this approach we have found the maximum value in the scores
+    #  list and since this value is going to be unique like others, we can just make another array of this size with all values in that array as -1 from beforehand
+    #  and just update the values we are going over in the scores array and place those values at index's which will give us a hint as to at which position which
+    #  value is supposed to be there. using this information we can easily create the answer list.
+
+    # 2- since we know that we want to maximum value each and everytime in oder to rank the scores easily so it automatically strikes as to what data structure can 
+    # give you the maximum value each time you remove one maximum value to rank it. We have simply used a heap in order to store all the values of the score with 
+    # their index number as a tuple which will give us the highest value each time we extract a value along with its index so using this we can easily create the
+    #  answer list.
+
+    # 3- The simplest yet almost most effective method is that we sort the score values and once it is sorted we know that the maximum value has to be ranked 1,
+    #  then the next max value as 2 and using this we need to create an answer list so we can use a dictionary to reduce our retrieval time of the index at which
+    #  we were supposed to put the rank at.
+
+# Thoughts on the Problem and Challenges:-
+    # How to utilize the uniqueness of value in a question.
+
+# Learnings for a beginner in this problem:-
+    # 1- heap usage
+    # 2- max heap
+    # 3- min heap
+
+# Date - 23/05/24
+# Time - 10 mins
+    
+
+
+
+
+
+
+
+
+
+
+
+
