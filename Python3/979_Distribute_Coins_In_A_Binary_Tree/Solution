@@ -1,0 +1,33 @@
+# Problem (link):- https://leetcode.com/problems/distribute-coins-in-binary-tree/description/
+
+# Notes-
+
+
+# TC - O(n) SC - O(h) h being the height of the binary tree. It is h because of the height of the binary tree. in the worst case scenario when the binary tree is 
+# just skewed then it can go till O(n) and for perfectly balanced tree it can come upto O(log n)
+class Solution:
+    def distributeCoins(self, root: Optional[TreeNode]) -> int:
+        self.moves = 0
+        def dfs(node, parent):
+            if not node:
+                return 0
+            
+            left = dfs(node.left, node)
+            right = dfs(node.right, node)
+
+            self.moves += abs(left) + abs(right)
+            return node.val - 1 + left + right
+        dfs(root, None)
+        return self.moves
+
+# Solution Methods:-
+
+
+# Thoughts on the Problem and Challenges:-
+
+
+# Learnings for a beginner in this problem:-
+
+
+# Date - 23/05/24
+# Time - 10 mins
