@@ -1,0 +1,36 @@
+# Problem (link):- https://leetcode.com/problems/burst-balloons/description/
+# Notes-
+# 1- This is a Tad bit difficult sum, you can only realize the solution for the first time if you get some hints otherwise it can take your hours.
+# 2- the one thing you should undeerstand in this problem is that the subproblems are changing with every balloon you burst and thus this new found approach has
+#  to be taken rather than the usual DP one.
+
+# TC - O(n^3) SC - O(n^2)
+class Solution:
+    def maxCoins(self, nums: List[int]) -> int:
+        n = len(nums)
+        nums = [1] + nums + [1]
+        OPT = [[0] * (n+2) for _ in range(n+2)]
+
+        for j in range(1, n+1):
+            for i in range(n, 0, -1):
+                if i <= j:
+                    for k in range(i, j+1):
+                        OPT[i][j] = max(OPT[i][j], nums[i-1]*nums[k]*nums[j+1] + OPT[i][k-1] + OPT[k+1][j])
+        return OPT[1][n]
+
+# Solution Methods:-
+    # 1- Created an optimal 2D list to store the values for the maximum coins one can acquire by bursting balloons for every possible sequence when one decided
+    #  balloon is to be BURST LAST.
+    
+# Thoughts on the Problem and Challenges:-
+    # how to realize that the subproblems will not be the same once you decide to burst one balloon
+    # to understand how the dynamics change once you burst your balloon and so what changes to be made in the approach to overcome this situation.
+    # very string indexing fundamentals
+
+# Learnings for a beginner in this problem:-
+    # 1- Learn how to use Dynamic Programming, understand that the only way to come up with a solution is to search the entire solution space and the most efficient
+    #  way to do that is only DP.
+    # 2- 
+
+# Date - 23/05/24
+# Time - 30 mins
