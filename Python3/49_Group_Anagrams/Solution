@@ -1,0 +1,95 @@
+# Problem (link):- https://leetcode.com/problems/group-anagrams/description/
+
+# Notes-
+#This is quite interesting, in this scenario i put an asterisk on TC as seeing the TC of this solution you might clearly think that this is better than the one where
+# we are sorting whose TC is O(n * m log m). But i wanted to point out that this is NOT always true. Lets break it down. 
+# 1- Understanding why is it not ALWAYS TRUE --> the reason is the number of operations. These are cases when one solution might take 2m and the other might take
+    #  3m operations but both are mentioned as taking O(m) time complexity and although it appears that both code are equally efficient, they actually aren't.
+    #  This is one of those cases. 
+# 2- In this code where we use a Counter and frozenset, you can observe that for creating a Counter we will iterate over all the letters in a the word that we are 
+    # currently considering in the for loop, this gives us m amount of operations. Now in the next line of code when we convert this Counter output to frozenset so
+    #  it can be put in a hash table like the anagram dictionary, we need to notice that frozen set will also iterate through word_counter.items() which will give us
+    #  in the worst case scenario(when all letters in a word are unique) m operations, but as we can see that usually in the real word scenario most of the words
+    #  have repeating leters and so we can consider that the majority of the cases there will be u operations where u < m. So in this case it'll take m + u operations
+    #  OR m+m (2m) and the sorting method will take m log m operations. So it can be that the sorting method is faster, it depends on the uniqueness of the letters
+    #  in each of the word within the strs list.
+
+# Solution 1: # TC - O(n * m log m) where n is the length(number of words) of the strs list and m is the length of the longest word in strs. SC - O(n * m)
+class Solution:
+    def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
+        anagrams = {} #SC - O(n * m)
+        for word in strs: #TC - O(n)
+            sorted_word = ''.join(sorted(word)) #TC - O(m log m)
+            if sorted_word not in anagrams:
+                anagrams[sorted_word] = []
+            anagrams[sorted_word].append(word)
+        return reversed(list(anagrams.values()))
+
+
+# Solution 2: # *TC - O(n * m) where n is the length(number of words) of the strs list and m is the length of the longest word in strs. SC - O(n * m)
+#This is quite interesting, in this scenario i put an asterisk on TC as seeing the TC of this solution you might clearly think that this is better than the one where
+# we are sorting whose TC is O(n * m log m). But i wanted to point out that this is NOT always true. Lets break it down. 
+# 1- Understanding why is it not ALWAYS TRUE --> the reason is the number of operations. These are cases when one solution might take 2m and the other might take
+    #  3m operations but both are mentioned as taking O(m) time complexity and although it appears that both code are equally efficient, they actually aren't.
+    #  This is one of those cases. 
+# 2- In this code where we use a Counter and frozenset, you can observe that for creating a Counter we will iterate over all the letters in a the word that we are 
+    # currently considering in the for loop, this gives us m amount of operations. Now in the next line of code when we convert this Counter output to frozenset so
+    #  it can be put in a hash table like the anagram dictionary, we need to notice that frozen set will also iterate through word_counter.items() which will give us
+    #  in the worst case scenario(when all letters in a word are unique) m operations, but as we can see that usually in the real word scenario most of the words
+    #  have repeating leters and so we can consider that the majority of the cases there will be u operations where u < m. So in this case it'll take m + u operations
+    #  OR m+m (2m) and the sorting method will take m log m operations. So it can be that the sorting method is faster, it depends on the uniqueness of the letters
+    #  in each of the word within the strs list.
+class Solution:
+    from collections import Counter
+    def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
+        anagrams = {} #SC - O(n * m)
+        for word in strs: #TC - O(n)
+            word_counter = Counter(word) #TC - O(m)
+            counter_frozenset = frozenset(word_counter.items()) #TC - O(u) where u is the number fo unique character this particular word in the strs list has.
+            
+            if counter_frozenset not in anagrams:
+                anagrams[counter_frozenset] = []
+            anagrams[counter_frozenset].append(word)
+        return list(anagrams.values())
+    
+# Solution 3: # TC - O(n^2 * m) SC- O(n * m) 
+class Solution:
+    from collections import Counter
+    def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
+        anagrams = {} #SC - O(n * m)
+        flag = [0] * len(strs) #SC - O(n)
+        k = 0 
+        # TC - O(n^2)
+        for i in range(len(strs)): #TC - O(n)
+            if flag[i] != 1:
+                anagrams[k] = [] 
+                anagrams[k].append(strs[i])
+                for j in range(i+1, len(strs)): #TC - O(n)
+                    if Counter(strs[i]) == Counter(strs[j]): #TC - O(m) m is length of the word
+                        anagrams[k].append(strs[j]) 
+                        flag[j] = 1
+                k += 1
+        answer = [] #SC - O(n * m)
+        for i in range(len(anagrams)): #TC - O(n)
+            answer.append(anagrams[i])
+        return answer
+
+# Solution Methods:-
+    # 3- A naive approach where you simply traverse the list using a loop and a nested loop where for each word you compare each of the other words if they match
+    #  and if they do then you put them in a dictionary so its fast retrieval and get the output.
+    # 2- using the counter method which gives you the count for the frequency of the letters existing.
+    # 1- using the sorted method this is one of the best since the sroted word is directly hashable, so easy code to write. comparing sorted words gives us fast results.
+
+# Thoughts on the Problem and Challenges:-
+    # USAGE OF Hash Table
+    # usage of counter method
+    # usage of frozenset
+    # understanding why there can be high contention between solution 1 and 2.
+
+# Learnings for a beginner in this problem:-
+    # 1- learning counter mthod usage and working
+    # 2- learning why the time complexity between the 2 solution is so close.
+
+
+# Date - 26/05/24
+# Time - 17 min
