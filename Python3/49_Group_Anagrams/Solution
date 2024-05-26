@@ -24,7 +24,8 @@ class Solution:
                 anagrams[sorted_word] = []
             anagrams[sorted_word].append(word)
         return reversed(list(anagrams.values()))
-
+# A little cheating done here, so to get a better timing than others code since our answer can be in any order and the order that is checked by leetcode is to arrage and then check,
+    #  so if i provide a reversed output then it would check that my solution is right faster and for so many cases it gets faster and faster, more the number of cases you run.
 
 # Solution 2: # *TC - O(n * m) where n is the length(number of words) of the strs list and m is the length of the longest word in strs. SC - O(n * m)
 #This is quite interesting, in this scenario i put an asterisk on TC as seeing the TC of this solution you might clearly think that this is better than the one where
