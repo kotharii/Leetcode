@@ -32,7 +32,29 @@ for nums in map(loads, sys.stdin):
     print(dumps(list(map(itemgetter(0), Counter(nums).most_common(int(sys.stdin.readline()))))))
 
 exit()
-    
+
+# Solution 3: 
+#TC - O(n) SC - O(u)    
+class Solution:
+    def topKFrequent(self, nums: List[int], k: int) -> List[int]:
+        count = {} #SC - O(n)
+        frequency = [[] for _ in range(len(nums) + 1)] #SC - O(n)
+        
+        for num in nums: #TC - O(n)
+            count[num] = 1 + count.get(num, 0)
+
+        for num, co in count.items(): #TC-O(u) u is for unique number of items in count
+            frequency[co].append(num)
+
+        answer = [] #SC-O(k)
+        for i in range(len(frequency)-1, 0, -1): #O(n)
+            if frequency[i]:
+                for j in range(len(frequency[i])): # O(n) 
+                    answer.append(frequency[i][j])
+                    k -= 1
+                    if k == 0:
+                        return answer
+
 
 # Solution Methods:-
 # 1- as you would be able to clearly notice that since everytime we wanted the most repeated(frequency) number we could have just chosen max-heap to provide us with it when we
@@ -47,11 +69,17 @@ exit()
 # dealing with very large volumes of data.
 # Hardware and Environment: The performance can also depend on how Python and its libraries are optimized on the running hardware, including factors like CPU cache utilization, memory
 #  bandwidth, and the operating system's handling of file I/O versus console I/O.
+                    
+# 3- This is an algorithm called as bucket sort which helps us in completing this sum within O(n) time complexity which is very fast. This was done by using a counterlike in solution
+    #  1 but instead of storing it in a heap we store it in an array which is made up of len of num counts because max length can be of nums array only and using this array we can in 
+    # a quicker way access the eleents that have a higher count since the count is automatically arranged in sorted manner.
+
+    #This algorithm is the one where we use a bucket to put each number into it and if there are more numbers to be put within one buckets then we join it using a linked list and
+    #  sort it using one iteration through all the buckets. helps in making the sorting in O(n).
 
 
 # Thoughts on the Problem and Challenges:-
-    # usage of counter instead of counting the default way
-    # Understanding why are other peoples code better in terms of running on a particular system even when their TC and SC are more over the same.
+    # knowing how to use the bucket sort algorithm after twisting it a lil bit to apply it here.
 
 # Learnings for a beginner in this problem:-
     # 1-
