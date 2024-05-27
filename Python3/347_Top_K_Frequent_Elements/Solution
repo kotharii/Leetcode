@@ -1,0 +1,63 @@
+# Problem (link):- https://leetcode.com/problems/top-k-frequent-elements/
+
+# My Note-
+# 1- The question is very straight forward and as soon as you know you want k of the elements, you should realize that you will have to take out k elements from some data structure 
+# and what better data Structure than a heap that will not only provide you with the max frequency number but also takes only log n for extraction. 
+
+# Solution 1: 
+#TC - O(n + u log u) SC - O(u)
+class Solution:
+    import heapq
+    def topKFrequent(self, nums: List[int], k: int) -> List[int]:
+        count = {} #SC - O(u)
+        for i in range(len(nums)): #TC - O(n)
+            if nums[i] in count:
+                count[nums[i]] += 1
+            else:
+                count[nums[i]] = 1
+        heap = [] # SC - O(u)
+        for i in range(len(count)): #TC - O(u)
+            key, value = count.popitem()
+            heapq.heappush(heap, (-value, key)) #TC - O(u log u)
+        
+        answer = [] #SC - O(k)
+        for i in range(k): #TC - O(k)
+            key, value = heapq.heappop(heap) #TC - O(k log u)
+            answer.append(value)
+        return answer
+    
+#Solution 2: #TC - O(n + u log u) SC - O(u)
+sys.stdout = open('user.out', 'a')
+for nums in map(loads, sys.stdin):
+    print(dumps(list(map(itemgetter(0), Counter(nums).most_common(int(sys.stdin.readline()))))))
+
+exit()
+    
+
+# Solution Methods:-
+# 1- as you would be able to clearly notice that since everytime we wanted the most repeated(frequency) number we could have just chosen max-heap to provide us with it when we
+    #  store the count for each number within the heap.
+    
+
+# 2- just a very optimized way to write the same code but will run way faster and beat 100% of the people who have written this code in terms of TC and SC because of the following
+    #  reasons:
+# Efficiency of Counter and most_common(): Python's Counter is highly optimized for counting operations and finding the most common elements efficiently. The combination of these might
+#  have been particularly well-suited to the input characteristics or the runtime environment.
+# System-Level Optimizations: Writing to a file and handling input/output through sys.stdin and sys.stdout can sometimes be faster in environments where console I/O is slower or when 
+# dealing with very large volumes of data.
+# Hardware and Environment: The performance can also depend on how Python and its libraries are optimized on the running hardware, including factors like CPU cache utilization, memory
+#  bandwidth, and the operating system's handling of file I/O versus console I/O.
+
+
+# Thoughts on the Problem and Challenges:-
+    # usage of counter instead of counting the default way
+    # Understanding why are other peoples code better in terms of running on a particular system even when their TC and SC are more over the same.
+
+# Learnings for a beginner in this problem:-
+    # 1-
+
+# Date - 27/05/24
+# Time - 10 mins
+
+
+
