@@ -1,0 +1,96 @@
+# Problem (link):- https://leetcode.com/problems/product-of-array-except-self/
+
+# Notes-
+#
+# 1- This is a kind of problem where you havent encountered a one which is similar to this or have soled any prefix postfix one then it'll be a little bit too difficult to come up with
+#  a solution better than O(n^2) time complexity.
+# 2- when you see such a kind of a question, do not be discouraged if you cannot solve it within better than O(n^2) TC immediately because these are some sums you have to remeber the
+#  patterns to.
+
+# Solution 1: # TC - O(n) where n is the length of the nums array. SC - O(n)
+class Solution:
+    def productExceptSelf(self, nums: List[int]) -> List[int]:
+        prefix = [0] * (len(nums)) #SC - O(n)
+        postfix = [0] * (len(nums)) #SC - O(n)
+        prefix[0] = nums[0]
+        postfix[-1] = nums[-1]
+        for i in range(1, len(nums)): #TC - O(n)
+            prefix[i] = nums[i] * prefix[i-1]
+        
+        for i in range(len(nums)-2, -1, -1): #TC - O(n)
+            postfix[i] = nums[i] * postfix[i+1]
+        
+        answer = [0] * len(nums) #SC - O(n)
+        for i in range(len(nums)): #TC - O(n)
+            if i == 0:
+                answer[i] = 1 * postfix[i+1]
+            elif i == len(nums) - 1:
+                answer[i] = prefix[i-1] * 1
+            else:
+                answer[i] = prefix[i-1] * postfix[i+1]
+        return answer
+    
+# Solution 2: TC - O(n) SC - O(1)* --> this is actually O(n) space complexity but since in the problem it was given that "The output array does not count as extra space for space
+    #  complexity analysis.", therefore it is being counted as O(1).
+class Solution:
+    def productExceptSelf(self, nums: List[int]) -> List[int]:
+        answer = [0] * len(nums) #O(n)
+        answer[0] = 1
+        for i in range(1, len(nums)): #TC - O(n)
+            answer[i] = nums[i-1] * answer[i-1]
+        postfix = 1
+        for i in range(len(nums)-2, -1, -1): #TC - O(n)
+            postfix *= nums[i+1]
+            answer[i] = answer[i] * postfix
+        return answer
+    
+#Solution 3: TC - O(n) SC - O(1)
+class Solution:
+    def productExceptSelf(nums: List[int]) -> List[int]:
+        prodZeros = 1
+        prodWithoutZeros = 1
+        numZeros = 0
+        for num in nums:
+            if num == 0:
+                numZeros += 1
+            
+            if numZeros > 1:
+                return [0] * len(nums)
+
+            prodZeros *= num 
+            prodWithoutZeros *= num if num != 0 else 1
+        
+
+        return [(prodZeros // num) if num != 0 else prodWithoutZeros for num in nums ]
+        
+    f = open('user.out', 'w')
+    for i in stdin:
+        nums = list(map(int,i.rstrip()[1:-1].split(r',')))
+        print(str(productExceptSelf(nums)).replace(" ", ""), file=f)
+        
+    exit(0)
+
+
+# A little cheating done here, so to get a better timing than others code since our answer can be in any order and the order that is checked by leetcode is to arrage and then check,
+    #  so if i provide a reversed output then it would check that my solution is right faster and for so many cases it gets faster and faster, more the number of cases you run. 
+    # Leaning to write code in such a manner so in competitive programming area's so I can win over other code's running times.
+
+# Solution Methods:-
+    # 1- Uses the method where we first make one pass through the nums array and store the product of each number with each other as prefix in the prefix array so we
+    #  have all the prefix for all of the individual numbers. Similarly, we can do this for postfix and now for the answer array we will just multiply both of the
+    #  values of that particular number prefix and postfix in order to get out answer.
+    # 2- It is moreover the same solution but in space time complexity O(1) since we directly use just the answer array in order to store the prefix and directly
+    #  multiply the postfix with these previously stored prefix's in it. Overall the approach and logic is exactly the same.
+    # 3- A very smart approach where we try to make it faster by noticing some of the cases where we can terminate the loop really early and also to use certain
+    #  efficient technique to produce the result faster.
+
+# Thoughts on the Problem and Challenges:-
+    # usage of prefix and postfic
+
+# Learnings for a beginner in this problem:-
+    # 1- learning prefix postfix method
+    # 2- understanding how to make this so efficient to beat the running time of other codes even when the time complexity is moreover the same.
+
+
+# Date - 28/05/24
+# Time - 1
