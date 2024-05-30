@@ -46,22 +46,20 @@ class Solution:
     
 # Solution 3: # TC - O(n) SC - O(n) --> but in actuality beats 100% other users in TC and SC
 def longestConsecutive(t):
-    print(t)
     s = set(t)
-    print(s)
-    q = 0
+    c = 0
     while s:
         n = s.pop()
         l = n - 1
         while l in s:
             s.remove(l)
-            l-=1
-        h = n + 1
-        while h in s:
-            s.remove(h)
-            h+=1
-        q = max(q, h-l-1)
-    return q
+            l -= 1
+        r = n + 1
+        while r in s:
+            s.remove(r)
+            r += 1
+        c = max(c, r - l - 1)
+    return c
 with open('user.out', 'w') as f:
     for c in map(loads, stdin):
         f.write(f"{longestConsecutive(c)}\n")
