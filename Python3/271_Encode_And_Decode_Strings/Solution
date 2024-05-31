@@ -1,0 +1,49 @@
+# Problem (link):- https://leetcode.com/problems/longest-consecutive-sequence/description/
+
+# Notes-
+# 1- A method where you understand that no matter what elements you add it can always clash with an elements that can be present within the string, so the best
+    #  way itself is to directly mention the length of the string which would really help in decoding since you already know the length of a particular string you
+    #  are at, so you can just take that and leave the rest of the processing cause you are already ready with the length. Just added a pound sign after the number
+    #  cause what if the number is two digits or three digits long then we wouldn't know if the number is from the length that we printed in front of the string or
+    #  an actual number that was already present in the string, so everytime we come at a pound sign we know the number before it is the length of the string.
+# 2- 
+
+# Solution 1: # TC - O(n) SC - O(n)
+class Solution:
+    def encode(self, strs):
+        str = ""
+        for word in strs:
+            str += f"{len(word)}#{word}"
+        return str
+    def decode(self, str):
+        answer = []
+        self.number = ""
+        i = 0
+        while i < (len(str)):
+            if str[i] != "#":
+                self.number += str[i]
+                i += 1
+            else:
+                answer.append(str[(i+1):(i + int(self.number) + 1)])
+                i += (int(self.number) + 1)
+                self.number = ""
+        return answer
+
+# Solution Methods:-
+    # 1- iterated through the list while adding the length of each string before it with a pound sign attached. While decoding used the length in order to append
+    #  that much of the characters into the list and then directly skip over those number of characters so i just process the numbers that are before strings which
+    #  can reduce the time taking by operations a lot, but in the worst case scenario where there are only strings with one character in the entire list and we are
+    #  adding two elements which is its length and the pound sign per character so the time complexity in such can be said to be O(n) tho it would be slightly a
+    #  little bit more.
+
+
+# Thoughts on the Problem and Challenges:-
+    # try to think in a different direction than what should i add to this string that wont be used in the testcases that i can get the answer, rather think how can
+    #  i add such a thing that i directly get the size and can use that to my advantage.
+
+# Learnings for a beginner in this problem:-
+    # 1- 
+
+
+# Date - 31/05/24
+# Time - 10
