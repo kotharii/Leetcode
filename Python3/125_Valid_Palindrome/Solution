@@ -1,0 +1,69 @@
+# Problem (link):- https://leetcode.com/problems/product-of-array-except-self/
+
+# Notes-
+#
+# 1- The space complexity being O(n) is not really a very bad factor, though if given more thought, multiple answers and ways can be come across in order to solve
+#  this same proble within less scace than what it curently takes.
+
+
+# Solution 1: # TC - O(n) where n is the length of the string s. SC - O(n)
+class Solution:
+    def isPalindrome(self, s: str) -> bool:
+        b = ""
+        for letter in s:
+            if letter.isalnum():
+                b += letter.lower()
+        return b == b[::-1]
+    
+# Solution 2: #TC - O(n) SC- O(1)
+class Solution:
+    def isPalindrome(self, s: str) -> bool:
+        l = 0
+        r = len(s)-1
+        while l <= r:
+            if s[l].isalnum() and s[r].isalnum():
+                if s[l].lower() == s[r].lower():
+                    l += 1
+                    r -= 1
+                else:
+                    return False
+            elif not s[l].isalnum():
+                l += 1
+            elif not s[r].isalnum():
+                r -= 1
+        return True
+    
+#Solution 3: #TC - O(n) SC- O(n)
+class Solution:
+    def isPalindrome(self, s: str) -> bool:
+        t = s[::-1]
+        u = 0
+        d = 0
+        while u < len(s) and d < len(t):
+            if s[u].isalnum() and t[d].isalnum():
+                if s[u].lower() == t[d].lower():
+                    u += 1
+                    d += 1
+                else:
+                    return False
+            elif not s[u].isalnum():
+                u += 1
+            elif not t[d].isalnum():
+                d += 1
+        return True
+
+
+# Solution Methods:-
+    # 1- This is the naive approach method where we declare a new empty string and fill it with all the lowercase alphanumeiric values that appear in s and once it
+    #  is done we simply compare it and its reverse.
+
+# Thoughts on the Problem and Challenges:-
+    # tro to think in creative ways, this problem espeacilly has multiple ways to solve it.
+
+# Learnings for a beginner in this problem:-
+    # 1- 
+    # 2- 
+
+
+# Date - 01/06/24
+# Time - 1
