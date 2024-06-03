@@ -1,0 +1,55 @@
+# Problem (link):- https://leetcode.com/problems/container-with-most-water/
+
+# Notes-
+# 1- The question is very stright forward, all you need to realize is that the area in which the water will be trapped id dependent on two things, 
+# 1- the height of the two bars 
+# 2- the distance between both of them.
+
+# Solution 1: # TC - O(n)--> since in the worst case the heights which are next to each other at the mid point of the height list have the max area possible. SC- O(1)
+class Solution:
+    def maxArea(self, height: List[int]) -> int:
+        l = 0
+        r = len(height) - 1
+        maximum = 0
+        while l < r:
+            water = (r-l) * min(height[l], height[r])
+            maximum = max(water, maximum)
+            if height[l] < height[r]:
+                l += 1
+            elif height[r] == height[l] and r - l > 1:
+                if height[r-1] <= height[l+1]:
+                    l += 1
+                else:
+                    r -= 1
+            else:
+                r -= 1
+        return maximum
+
+
+# Solution 2: # # TC - O(n)--> since in the worst case the heights which are next to each other at the mid point of the height list have the max area possible.
+    #  SC- O(1). Same solution just a little more concise and simple
+class Solution:
+    def maxArea(self, height: List[int]) -> int:
+        l = 0
+        r = len(height) - 1
+        maximum = 0
+        while l < r:
+            maximum = max((r-l) * min(height[l], height[r]), maximum)
+            if height[l] < height[r]:
+                l += 1
+            else:
+                r -= 1
+        return maximum
+
+# Solution Methods:-
+    # 1- Two pointer method
+
+
+# Thoughts on the Problem and Challenges:-
+    # USAGE OF two pointers method
+
+# Learnings for a beginner in this problem:-
+    # 1- how to use two pointer method.
+
+# Date - 03/06/24
+# Time - 10 min
