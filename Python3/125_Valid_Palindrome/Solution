@@ -1,9 +1,9 @@
-# Problem (link):- https://leetcode.com/problems/product-of-array-except-self/
+# Problem (link):- https://leetcode.com/problems/valid-palindrome/
 
 # Notes-
 #
 # 1- The space complexity being O(n) is not really a very bad factor, though if given more thought, multiple answers and ways can be come across in order to solve
-#  this same proble within less scace than what it curently takes.
+#  this same problem within less space than what it curently takes.
 
 
 # Solution 1: # TC - O(n) where n is the length of the string s. SC - O(n)
