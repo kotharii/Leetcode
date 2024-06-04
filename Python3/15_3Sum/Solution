@@ -1,0 +1,87 @@
+# Problem (link):- https://leetcode.com/problems/3sum/
+
+# Notes-
+# 1- think of creative ways of:- 
+# 1- preventing duplicates in the triplets
+# 2- how to take advantage of the fact that the list is sorted.
+# 3- usage of permutation and combination logic helps too.
+# 4- First complete doing two sum II in order to get this question a fair attempt
+# 5- think of it this way, if you fix one of the numbers of the three numbers that you have to add then for the remainig of two numbers that you will
+#  have to add will become nothing else but a two sum II problem.
+
+# Solution 1: # TC - O(n^2) SC - O(n)
+class Solution:
+    def threeSum(self, nums: List[int]) -> List[List[int]]:
+        num = sorted(nums) # TC - O(nlogn)
+        dic = {} #SC - O(n)
+        for i in range(len(num)): #TC - O(n)
+            dic[num[i]] = i
+        triplets = {} #SC - O(n)
+        answer = [] #SC - O(n)
+        for i in range(len(num)-1): #TC - O(n)    total O(n^2) because another loop inside.
+            for j in range(i+1, len(num)): #TC - O(n)
+                sum = num[i] + num[j]
+                k = 0 - sum
+                if k in dic and dic[k] not in (i, j) and dic[k] > j:
+                    sorted_tuple = (num[i], num[j], k)
+                    if sorted_tuple not in triplets:
+                        triplets[sorted_tuple] = 1
+                        answer.append(list(sorted_tuple))
+        return answer
+
+
+# Solution 2: # TC - O(n^2) since in the worst case scenario, the first loop will go through each element present in the list anywhich ways and the
+#  while loop can at most travel n-1 if all the elements in the list form a unique triplet. SC - O(n) since in the worst case scenario there are
+#  n/3 unique triplets and thus all the n elements will be fit into the list.
+class Solution:
+    def threeSum(self, nums: List[int]) -> List[List[int]]:
+        answer = []
+        nums.sort()
+        for i in range(len(nums)):
+            if nums[i] > 0:
+                continue
+            if i > 0 and nums[i] == nums[i-1]:
+                continue
+            
+            val = -nums[i]
+            l = i + 1
+            r = len(nums) - 1
+            
+            while l < r:
+                if nums[l] + nums[r] < val:
+                    l += 1
+                elif nums[l] + nums[r] > val:
+                    r -= 1
+                else:
+                    answer.append([nums[i], nums[l], nums[r]])
+                    while l < r and nums[l+1] == nums[l]:
+                        l += 1
+                    while l < r and nums[r-1] == nums[r]:
+                        r-= 1
+                    l += 1
+                    r -= 1
+        return answer
+
+# Solution Methods:-
+    # 1- A naive approach where you store the indices of every elements into the dictionary and use it to find the value of the third element in order
+    #  to add to the other two numbers to make it 0. An approach where you let duplicates be created in the answer list and then remove them by
+    #  sorting them then creating a set of them and then converting them back into a lsit.
+    
+    # 2- think of it this way, if you fix one of the numbers of the three numbers that you have to add then for the remainig of two numbers that you will
+#  have to add will become nothing else but a two sum II problem.
+
+
+# Thoughts on the Problem and Challenges:-
+    # USAGE OF two pointers method
+    # How to Take advantage of the fact that it is now a sorted list.
+    # How to cover the edge cases of not consideirng duplicates in the first place rather than remove it later on
+
+# Learnings for a beginner in this problem:-
+    # Two Sum II method.
+    # USAGE OF two pointers method
+    # How to Take advantage of the fact that it is now a sorted list.
+    # How to cover the edge cases of not consideirng duplicates in the first place rather than remove it later on
+
+
+# Date - 04/06/24
+# Time - 1 1/2 hr.
