@@ -1,0 +1,59 @@
+# Problem (link):- https://leetcode.com/problems/longest-substring-without-repeating-characters/
+
+# Notes-
+# 1- The thing that i particularly leanred in this question was that:-
+# --> In Sliding Window we know that the an earlier element is to be removed and a new element is to be considered BUT it is not compulsory to 
+# DELETE the earlier element in order to add the new element. 
+
+# RATHER what you can also do is REMOVE EARLIER ELEMENT FROM CONSIDERATION (rather than deleting it in actuality) and for the new element you can 
+# either add that new element or if there are any repeating elements then update the previous element that was repeating to the new element. 
+
+# 2- The moment uyou realize that yo u will have to move along the string while also having to consider string lengths of various sizes along the way,
+#  that is the moment itself you should realize that the solution for this would use nothing else bu Sliding Window.
+
+# 3- Sliding Window is a concept where you will have two types of questions:
+# i - find the x for eg --> sum for a particular size of the window which will be provided to you (x can be anything --> basically fixed size window
+#  question), for example telling which which three continuous pair of numbers within a list would have the maximum sum, then in such a case you take
+#  the first three blocks into consideration then you remove the first block from consideration and add the new block(which will become the third block)
+#  into consideration to sum it up, SO THAT THIS UTILIZES THE SUM THAT HAS ALREADY BEEN CARRIED OUT FOR THE FIRST ITERATIONS BLOCK NUMBER 2 AND 3 
+# WHICH WILL BECOME SECOND ITERATIONS BLOCK NUMBER 1 AND 2.
+# ii- find the size of the window, which is nothing but the exact opposite question to the one provided in i. for example, find the largest size of
+#  the window which will give us a sum of 5
+
+# Solution 1: # TC - O(n) SC - O(1)
+class Solution:
+    def lengthOfLongestSubstring(self, s: str) -> int:
+        dic = {}
+        max_length = 0
+        l = 0
+        r = 0
+        while r < len(s):
+            if s[r] in dic and dic[s[r]] >= l:
+                l = dic[s[r]] + 1
+                dic[s[r]] = r
+                r += 1
+            else:
+                dic[s[r]] = r
+                max_length = max(max_length, r - l + 1)
+                r += 1
+        return max_length
+
+# Solution 2: # There is a method to do the brute force approach which would be nothing but the solution where we use two loops one which iterates
+#  through the string once and another one which loops through the n-1 characters in the string and gets all the different length substrings which
+#  are possible.
+
+# Solution Methods:-
+    # 1- explained in notes
+
+
+# Thoughts on the Problem and Challenges:-
+    # USAGE OF two pointers method and also sliding window technique
+    # make sure that you consider both removing the elements from the data structure and removing the element from CONSIDERATION from the data structure.
+
+# Learnings for a beginner in this problem:-
+    # 1- how to use two pointer method.
+    # 2- how to use the sliding window technique
+
+
+# Date - 05/06/24
+# Time - 1 1/2 hr
