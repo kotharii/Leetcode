@@ -1,0 +1,60 @@
+# Problem (link):- https://leetcode.com/problems/longest-repeating-character-replacement/
+
+# My Note-
+# 1- as soon as you read the question which asks for the length of a substring/ part of the list with a condition given along with it,
+#  it is almost instantaneous to think about sliding window techniqe to solve it.
+# 2- in this since we have been asked to find the length of the longest substring which has only k other characters at max than the one with having the majority, we loop through the string and make a
+#  variable window size whcih will depend on conditions such as ** If they contain more than k other characters than the one being the majority, then it'll have to change the window size otherwise it
+#  can continue growing it and this find the longest subtring possible.
+
+# Solution 1: 
+#TC - O(n) - since we are looping over the string only once which is till r has covered the entire string.
+#  SC - O(n) - cause in the worst case scenario all the characters in the string s are unique and k is also equal to the len of the string so the dictionary will then contain all the characters from
+#  the string s.
+class Solution:
+    def characterReplacement(self, s: str, k: int) -> int:
+        l = 0
+        r = 0
+        length = 0
+        dic = {}
+        maxer = 0 
+        while r < len(s):
+            dic[s[r]] = dic.get(s[r], 0) + 1
+            length = max(length, dic[s[r]])
+            
+            if (r - l + 1) - length > k:
+                dic[s[l]] -= 1
+                l += 1
+            else:
+                maxer = max(maxer, ((r-l+1) - length))
+            r += 1
+
+        if len(s) - length < k:
+            return length + maxer
+        else: 
+            return (length + k)
+    
+#Solution 2: #TC - O(n^2) SC - O(1)
+# There is a solution  that can be done where in we save on space compared to the above solution but we will have significant impact on our time complexity, this solution will be the one where in we
+    #  can use two for loops where the first loop iterates over the characters present in the string and for each of the character it is currently on within the string there will be another for
+    #  loop which will be going through n-1(in the worst case) elements trying to find the size of the longest sibstring that will be possible within the k limit of other random characters that
+    #  they have given.
+
+# Solution Methods:-
+# 1- explain above - in this since we have been asked to find the length of the longest substring which has only k other characters at max than the one with having the majority, we loop through the string and make a
+#  variable window size whcih will depend on conditions such as ** If they contain more than k other characters than the one being the majority, then it'll have to change the window size otherwise it
+#  can continue growing it and this find the longest subtring possible.
+
+# 2- Brute force method. explained above.
+
+# Thoughts on the Problem and Challenges:-
+    # indentifying when and where to move the left pointer and how to move it(either to the element which has been differnt than the majority or just to the next element in the string) forms the crux here.
+
+# Learnings for a beginner in this problem:-
+    # 1- how to approach using count within the sliding window and how to make it variable depending on such conditions.
+
+# Date - 06/06/24
+# Time - 1 day
+
+
+
