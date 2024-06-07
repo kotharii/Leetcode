@@ -1,0 +1,76 @@
+# Problem (link):- https://leetcode.com/problems/minimum-window-substring/
+
+# ASKED IN META INTERVIEW!!!!!!!
+
+# My Note-
+# 1- as soon as you read the question which asks for the part of the string(substring) with the condition given that it should be the smallest window containing all
+#  the elemetns that are present in the string t, it is almost instantaneous to think about sliding window techniqe to solve it.
+# 2- The only trick you need to realize are a few gotchas which if you carefully write using the first testcase provided become then it is a good code:
+    # i- Realize what should you do(Condition you should hit) that will make you want to change the position of l and thus decrease the window size.
+    # ii - see carefully if you have made sure that even if duplicates are present in t then those are also accounted for in your code and it is not skipping or neglecting them.
+    # iii - make sure your code has a condition for when you encounter a character that you are not currently looking for while increasing the window 
+    # size(incrementing r), so that it accounts for this character later than just ignoring it simply because it is searching for another character.
+    # iv - make sure you are decreasing your windows size everytime when you do find a valid window.
+
+# Solution 1: 
+# TC - O(m + n) SC - O(n)
+class Solution:
+    def minWindow(self, s: str, t: str) -> str:
+        m = len(s) 
+        n = len(t) 
+        if n > m:
+            return ""
+        count = {} #SC - O(n)
+        for i in range(n): #TC - O(n)
+            count[t[i]] = count.get(t[i], 0) + 1
+
+        l = 0 
+        r = 0 
+        p = n 
+        length = float('inf') 
+        substring = [0,0] 
+        while r < m: #TC - O(m)
+            if s[r] in count: 
+                if count[s[r]] > 0:
+                    p -= 1
+                    while p == 0: #TC - O(n) cause in the worst case scenario, the above two if conditions makes sure that it only reaches this while loop if that character which is curernly being considered is not only in t but also has a count of more than 1, also not compulsory to happen a lot since it is rare to have gotten multiple characters of the same character that is being left behing by the left pointer to be in the valid window too many times.
+                        if (r - l + 1) < length:
+                            length = (r - l + 1)
+                            substring = [l,r]
+                        if s[l] in count:
+                            count[s[l]] += 1
+                            if count[s[l]] > 0:
+                                p += 1
+                        l+= 1
+                        while l <= r and s[l] not in count: #TC - O(n)
+                            l+= 1
+                count[s[r]] -= 1
+            r += 1
+        if length != float('inf'):
+            return s[substring[0]:substring[1]+1]
+        return ""
+
+# Solution Methods:-
+# 1- in this solution what we have done is first we removed(got) the counter for all the characters that are present in the string t, this we did so that when we do
+    #  loop over the characters of the string s and encounter a character that is pressent in the string t then we can come to know(that such a common character has
+    #  been encountered) which is by decreasing the count of that particular character in the dictionary.
+    # after having done this we will manipulate the counters in order to indiciate if some element is left to be encountered, if it is not and if a valid window 
+    #  found and then a character has been removed then has this characters removal made a common character be removed or not etc.
+    # using these methods it has been possible to maintain a window where there are valid charaters and having found the smallest length of this window, we have
+    #  extracted r and l from it and therefore returned that substring from the string s.
+
+# Thoughts on the Problem and Challenges:-
+    # indentifying when(WHAT CONDITION) and where to move the left pointer and how to efficiently directly move it to the next valid character rather than just doing
+    #  l+1 (either to the element which has been present in the string t or just to the next element in the string) forms the crux here.
+
+# Learnings for a beginner in this problem:-
+    # 1- how to use count efficiently
+    # 2- how to come up with the condition to move the left pointer
+    # 3- to realize when it can cause problems in repeated sequences
+    # 4- to think in depth using diffrent test cases in mind if it'll work or not.
+
+# Date - 06/06/24
+# Time - 1 day
+
+
+
