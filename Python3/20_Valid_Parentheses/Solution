@@ -1,0 +1,71 @@
+# Problem (link):- https://leetcode.com/problems/valid-parentheses/
+
+# FAANG's one of the Most Common Call Interview Round question:
+
+# My Note-
+# 1- it is a little bit time consuming to realize that you will need a stack in order to go through all the opening brackets in last in first out manner in order to
+#  compare that the closing brakets is appropriate for the last bracket or not and so you can compare this.  
+# 2- once you know its a stack usage then the sum is pretty easy and straight forward.
+
+# Solution 1: 
+# TC - O(n) since it will go through the entire string in order to determine if its a valid string or not.
+# SC - O(n) because in the worst case scenario there are all opening brackets that are present within the s string that is being provided and so all of them will be
+# present within the stack.
+class Solution:
+    def isValid(self, s: str) -> bool:
+        stack = []
+        values = {
+        "(": ")",
+        "{": "}",
+        "[": "]"
+        }
+        for i in range(len(s)):
+            if s[i] in values:
+                stack.append(s[i])
+            else:
+                if not bool(stack):
+                    return False
+                else:
+                    if s[i] == values[stack.pop()]:
+                        continue
+                    else:
+                        return False
+        if not bool(stack):
+            return True
+        else:
+            return False
+        
+# Solution 2:
+# TC - O(n) since it will go through the entire string in order to determine if its a valid string or not.
+# SC - O(n) because in the worst case scenario there are all opening brackets that are present within the s string that is being provided and so all of them will be
+# present within the stack.
+    # A more concise and simple, more readable way to write the solution.
+class Solution:
+    def isValid(self, s: str) -> bool:
+        stack = []
+        mapping = {")": "(", "}": "{", "]": "["}
+        for char in s:
+            if char in mapping:
+                if not stack or stack.pop() != mapping[char]:
+                    return False
+            else:
+                stack.append(char)
+        return not bool(stack)
+
+# Solution Methods:-
+# 1- first you create a dictionary where you map all the losing brackets with all the opening brackets or vice versa, then you loop through the string s and as soon
+    #  as you find a bracket that is a closing bracket you compare it with the opeing brackets value in the dictionary which will be this closing bracket itself
+    #  so you can have easy 1:1 comparision and once you do this it is then straightforward that if you stack is over at the end then its true and if not then
+    #  its false and even if you stack is over but you still have more closing brackets that will also not help and so that will also return false.
+
+# Thoughts on the Problem and Challenges:-
+    # identifying the usage of stack
+
+# Learnings for a beginner in this problem:-
+    # 1- how to use mapping in order to equate one bracket with the other.
+
+# Date - 07/06/24
+# Time - 10 mins
+
+
+
