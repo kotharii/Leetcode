@@ -1,0 +1,48 @@
+# Problem (link):- https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/
+
+# ASKED IN META INTERVIEW!!!!!!!
+
+# My Note-
+# 1- 
+
+# Solution 1: 
+class Solution:
+    def findMin(self, nums: List[int]) -> int:
+        l = 0
+        r = len(nums)-1
+        if l == r:
+            return nums[l]
+        elif r - l == 1 or 2:
+            return min(nums)
+        else:
+            mid = (l + r) // 2
+            while r != l:
+                if nums[l] < nums[mid] and nums[r] < nums[mid]:
+                    l = mid
+                    mid = (l + r) // 2
+                else:
+                    r = mid
+                    mid = (l + r) // 2                    
+
+                if mid == l or mid == r:
+                    return nums[mid]
+
+                if nums[mid+1] < nums[mid] and nums[mid-1] < nums[mid]:
+                    return nums[mid+1]
+                elif nums[mid] < nums[mid-1] and nums[mid] < nums[mid+1]:
+                    return nums[mid]
+
+# Solution Methods:-
+# 1- 
+
+# Thoughts on the Problem and Challenges:-
+    # 
+
+# Learnings for a beginner in this problem:-
+    # 1- 
+
+# Date - 08/06/24
+# Time - 20 mins
+
+
+
