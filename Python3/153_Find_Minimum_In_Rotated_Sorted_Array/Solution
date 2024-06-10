@@ -3,9 +3,13 @@
 # ASKED IN META INTERVIEW!!!!!!!
 
 # My Note-
-# 1- 
+# 1- noticed the property that the number which will be the minimum will be the one which will have both the numbers, its left and right being greater than itself
+#  and thats why i hurried and wrote a code where i stop as soon as i identify that this is the minimum number and so i wrote the solution 2. While theres no issue
+#  with this approach but that comparision with the left and right elements keep happening each and everytime in each loop (more operations overall)which can be time
+#  consuming and that is why the approach where you just find work the while loop till you find the sorted sequence is a much better and faster approach, and so that
+#  should be utilized where the minimum is also found quicker due to the mid = l + 1 and r - 1 approach as well. 
 
-# Solution 1: 
+# Solution 1: TC - O(log n) since its a binary search the whil loop will never run more than log n number of times where n is the length of the nums array. SC - O(1)
 class Solution:
     def findMin(self, nums: List[int]) -> int:
         l = 0
@@ -32,14 +36,37 @@ class Solution:
                 elif nums[mid] < nums[mid-1] and nums[mid] < nums[mid+1]:
                     return nums[mid]
 
+# Solution 2: TC - O(log n) since its a binary search the whil loop will never run more than log n number of times where n is the length of the nums array. SC - O(1)
+class Solution:
+    def findMin(self, nums: List[int]) -> int:
+        l = 0
+        r = len(nums) - 1
+        answer = nums[0]
+        while l <= r:
+            if nums[l] < nums[r]:
+                answer = min(answer, nums[l])
+                break
+
+            mid = (l+r) // 2
+            answer = min(answer, nums[mid])
+            if nums[l] <= nums[mid]:
+                l = (mid + 1)
+            else:
+                r = (mid - 1)
+        return answer
 # Solution Methods:-
-# 1- 
+# 1- both use binary search approach, where this solution stops when it ealizes that the numbers beside it are both greater than itself while the Solution 2 has the
+    #  solution where it stops if it has either found a sorted sequence or l < r which is when answer has already found the minimum value.
 
 # Thoughts on the Problem and Challenges:-
-    # 
+    # the thought process that there should be a flip somewhere in the nums array in order to recognize which half should we traverse towards is the trick over here
+    #  and that can only be gotten if you give it a very hard thought and notice that due to rotation the elements that will clearly give it that rotation has
+    #  happened and where the flip would be will always be nums[0] and nums[n-1] in the first iteration after that its just repitition. The moment you notice it,
+    #  its a piece of cake.
 
 # Learnings for a beginner in this problem:-
-    # 1- 
+    # 1- Binary Search implementation
+    # 2- Finding that the nums[0] and nums[n-1] will always give away the flip side would be located to the left or right in the first iteration.
 
 # Date - 08/06/24
 # Time - 20 mins
