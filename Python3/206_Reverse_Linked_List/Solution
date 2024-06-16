@@ -1,0 +1,43 @@
+# Problem (link):- https://leetcode.com/problems/reverse-linked-list/
+
+# Notes-
+# 1- 
+# 2- 
+
+# Solution 1: # TC - O(n) SC - O(n)
+# Definition for singly-linked list.
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+class Solution:
+    def reverseList(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        if head == None:
+            return
+        else:
+            tail = ListNode(head.val)
+            while head.next:
+                new_node = ListNode(head.next.val)
+                new_node.next = tail
+                tail = new_node
+                head = head.next
+        return tail
+
+
+# Solution 2: 
+
+
+# Solution Methods:-
+    # 1- 
+    # 2- 
+
+# Thoughts on the Problem and Challenges:-
+    
+
+# Learnings for a beginner in this problem:-
+    # 1- 
+    # 2- 
+
+
+# Date - 16/06/24
+# Time - 10 min
