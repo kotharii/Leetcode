@@ -1,0 +1,99 @@
+# Problem (link):- https://leetcode.com/problems/reverse-linked-list/
+
+# Notes-
+# 1- Once you read the question, it is pretty straightforward to understand that it is just a game of pointers in order to reverse those pointers in order to get the
+#  reversed list.
+# 2- One should realize on his/her own that this can be done recursively too and try that too, because it was a bit challenging to think of it all in my head in
+#  order to code it out.
+
+# Solution 1: # TC - O(n+m) - this is becuase its  a linked list you will have to travel through all the elements once in order to do anything and so we do travel all
+#  the nodes in the linked list in order to reverse them but in this case its only true in the worst case scenario, if there is a case where list 1 or 2 gets over really early then we
+#  just provide the pointer to the other list and this saves us time going through that other list entierly. 
+# SC - O(m+n) since we are creating a new node(using ListNode) every time when we want to add a node from the list1 or list2 because it is the correct node in the sorted list.
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+class Solution:
+    def mergeTwoLists(self, list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]:
+        if not list1:
+            return list2
+        elif not list2:
+            return list1
+        else:
+            if list1.val <= list2.val:
+                list3 = ListNode(list1.val)
+                list4 = list3
+                list1 = list1.next
+            else:
+                list3 = ListNode(list2.val)
+                list4 = list3
+                list2 = list2.next
+            while list1 and list2:
+                if list1.val <= list2.val:
+                    list3.next = ListNode(list1.val)
+                    list3 = list3.next
+                    list1 = list1.next
+                else:
+                    list3.next = ListNode(list2.val)
+                    list3 = list3.next
+                    list2 = list2.next
+            if not list1:
+                list3.next = list2
+            elif not list2:
+                list3.next = list1
+        return list4
+        
+# Solution 2: TC - O(n+m) - this is becuase its  a linked list you will have to travel through all the elements once in order to do anything and so we do travel all
+#  the nodes in the linked list in order to reverse them but in this case its only true in the worst case scenario, if there is a case where list 1 or 2 gets over really early then we
+#  just provide the pointer to the other list and this saves us time going through that other list entierly. 
+#  SC - O(1) - this is O(1) because in this we are just creating one ListNode and for the others we are just updating our pointers and so its O(1).
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+class Solution:
+    def mergeTwoLists(self, list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]:
+        dummy = ListNode()
+        current = dummy
+
+        while list1 and list2:
+            if list1.val <= list2.val:
+                current.next = list1
+                list1 = list1.next
+            else:
+                current.next = list2
+                list2 = list2.next
+            current = current.next
+
+        if list1:
+            current.next = list1
+        elif list2:
+            current.next = list2
+        
+        return dummy.next
+
+# Solution Methods:-
+    # 1- In this solution I am traversing the linked lists and such that everytime i find a linkedlist element from either of the lists, then i create a new node and add it to a 
+    # third list which contains of all the nodes in a sorted manner.
+    # 2- This solution is exactly the same as above except for 2 things, 1- instead of creating a new node everytime it just updates the pointers which is obviously the main move that
+    #  is imprtant as hell, and the second thing is the usage of the dummy node which really proves useful because it makes the code concise and easy to read.
+
+# Thoughts on the Problem and Challenges:-
+    # 1- This one mostly will be the second linked list problem that most of yall will be solving so here are a few properties to keep in mind which are very helpful:
+        # i - the elements in a linked lists are not stored in contiguous locations in the memory, they are stored anywhere in memory and that is the reason we need a
+        #  pointer from each node to the next node in order to know which element will occur next in the linked list.
+        # ii - different from arrays in one way - you can increase and decrease the size in demand, for example in arrays if you defined it to be of size 4 then you
+        #  cannot add a 5th element or remove an element from the 4 already in the array but in linked lists no matter that, you can always add a new elements and
+        #  remove an elements which is present in the linked lists already. 
+        # iii - an exmaple use case of linked list is a browser, where in a browser after having surfed and kept on clicking on multiple routing links that take you to
+        #  multiple different pages, when you want to go a route link back you just click the back button feature that has been given by the browser, the browser
+        #  maintains these route links in a linked list, they can use an array because they can predefine how many routing links will you be clicking on, so they will
+        #  have to append the routing links as and when you are clicking on them(dynamically).
+
+# Learnings for a beginner in this problem:-
+    # 1- how to use a dummy node.
+
+
+# Date - 17/06/24
+# Time - 15 min
