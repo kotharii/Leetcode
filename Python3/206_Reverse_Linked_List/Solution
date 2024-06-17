@@ -1,10 +1,14 @@
 # Problem (link):- https://leetcode.com/problems/reverse-linked-list/
 
 # Notes-
-# 1- 
-# 2- 
+# 1- Once you read the question, it is pretty straightforward to understand that it is just a game of pointers in order to reverse those pointers in order to get the
+#  reversed list.
+# 2- One should realize on his/her own that this can be done recursively too and try that too, because it was a bit challenging to think of it all in my head in
+#  order to code it out.
 
-# Solution 1: # TC - O(n) SC - O(n)
+# Solution 1: # TC - O(n) - this is becuase its  alinked list you will have to travel through all the elements once in order to do anything and so we do travel all
+#  the nodes in the linked list in order to reverse them. 
+# SC - O(n) since we are creating a new node(using ListNode) every time when we want to reverse a node(make it point towards its previous element).
 # Definition for singly-linked list.
 class ListNode:
     def __init__(self, val=0, next=None):
@@ -24,19 +28,60 @@ class Solution:
         return tail
 
 
-# Solution 2: 
-
+# Solution 2: TC - O(n) - this is becuase its  alinked list you will have to travel through all the elements once in order to do anything and so we do travel all
+#  the nodes in the linked list in order to reverse them. SC - O(1) - since we are reversing the linkedlist pointers in the original linked list itself and the extra
+#  variable (nxt) we are using is a pointer so it'll take only O(1) space too.
+class Solution:
+    def reverseList(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        if head == None:
+            return
+        else:
+            previous = None
+            current = head
+            while current.next != None:
+                nxt = current.next
+                current.next = previous
+                previous = current
+                current = nxt
+            current.next = previous
+            return current
+        
+# Solution 3: TC - O(n) - this is becuase its  a linked list you will have to travel through all the elements once in order to do anything and so we do travel all
+#  the nodes in the linked list in order to reverse them. SC - O(n) - this is O(n) because of the recursive nature of the code, in the call stack it will have to
+#  keep n or n-1 calls and tehrefore that much space will be occupied.
+class Solution:
+    def reverseList(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        if not head or not head.next:
+            return head
+        newhead = self.reverseList(head.next)
+        if head.next != None:
+            head.next.next = head
+            head.next = None
+        return newhead
 
 # Solution Methods:-
-    # 1- 
-    # 2- 
+    # 1- This is a pretty strighforward solution where we traverse the initially given linked list and according to whatever node we come accross we make that a new
+        #  node such that for each node we traverse in the initial list will be prepended to this new node list that is being created.
+    # 2- In this solution we can say that we have used the two pointer method, where the only slight striking part should be that you will have to create a new
+        #  variable(pointer) in order to be able to retrieve the next element of the original list.
+    # 3- solved it recursively, once you realize that the base condition will be when there is no next as it has reached the end of the linkedlist then it is pretty straightforward.
 
 # Thoughts on the Problem and Challenges:-
-    
+    # 1- This one mostly will be the first linked list problem that most of yall will be solving so here are a few properties to keep in mind which are very helpful:
+        # i - the elements in a linked lists are not stored in contiguous locations in the memory, they are stored anywhere in memory and that is the reason we need a
+        #  pointer from each node to the next node in order to know which element will occur next in the linked list.
+        # ii - different from arrays in one way - you can increase and decrease the size in demand, for example in arrays if you defined it to be of size 4 then you
+        #  cannot add a 5th element or remove an element from the 4 already in the array but in linked lists no matter that, you can always add a new elements and
+        #  remove an elements which is present in the linked lists already. 
+        # iii - an exmaple use case of linked list is a browser, where in a browser after having surfed and kept on clicking on multiple routing links that take you to
+        #  multiple different pages, when you want to go a route link back you just click the back button feature that has been given by the browser, the browser
+        #  maintains these route links in a linked list, they can use an array because they can predefine how many routing links will you be clicking on, so they will
+        #  have to append the routing links as and when you are clicking on them(dynamically).
 
 # Learnings for a beginner in this problem:-
-    # 1- 
-    # 2- 
+    # 1- how to prepend in a linked list
+    # 2- how to differentiate between a pointer to a linked list displaying all values and a list
+    # 3- how to maintain track of the list even after having changed the next of that respective node.
 
 
 # Date - 16/06/24
