@@ -1,0 +1,127 @@
+# Problem (link):- https://leetcode.com/problems/remove-nth-node-from-end-of-list/ 
+
+# Notes-
+# 1- Once you read the question, you do understand one thing, that you somehow need to bring the pointer to the element before the element that is to be removed and
+#  change its pointer to the element after the next one and if there is none then directly make the next element none.
+# 2- ofc the main question would be how would we calculate the nth number from the end of the list and so you can think of reversing the list, but you must realize
+#  that you have to return a head where the rest of the list is still possible, which wouldn't be possible if you reversed and and even if it was possible it would
+#  be after having reversing it again which was too much work and clear intuition that it wouldn't be the solution.
+# 3- you should try to come up with a solution on your own, which can be as creative as possible, as my first approach also was to set a counter in order to count
+#  the number of ndoes in the linked list and accordingly i could stop the second counter right before the nth element (first seeing if the element to be removed
+#  was to the left half of the mid point or the right half so I need to scan less amount of nodes) and i would be done with the question and so i went ahead with
+#  it knowing it isnt the best approach but still a solid one.
+
+
+# Solution 1: # TC - O(n) - this is becuase its a linked list you will have to travel through all the elements once in order to do ANYTHING,
+#  Moreover to be specific to this question, the first loop using the fast and slow pointers it iterates over atleast n/2 nodes in the linked list and so when we
+#  remove the constant it is O(n) --> this was a step done for 2 purposes, one to find the length as well as to find the mid point and thus to reduce the number of
+#  nodes that will need to be processed in order to reach the node that is to be removed. After this the second loops were just there to cover the cases for if the
+#  nodes to be removed from the linked list was in the right half, left half or at the position of the mid point.
+# SC - O(1) since we are only using pointers throughout and no such structure which takes space.
+class Solution:
+    import math
+    def removeNthFromEnd(self, head: Optional[ListNode], n: int) -> Optional[ListNode]:
+        if not head.next:
+            head = None
+            return head
+        slow, fast = head, head.next
+        length = 2
+        while fast and fast.next:
+            slow = slow.next
+            fast = fast.next.next
+            length += 2
+        if not fast:
+            length -= 1
+
+        remove_count = length + 1 - n
+        slow_counter = math.ceil(length / 2)
+
+        if remove_count > slow_counter:
+            while (slow_counter+1) != remove_count:
+                slow = slow.next
+                slow_counter += 1
+            if slow.next.next != None:
+                slow.next = slow.next.next
+            else:
+                slow.next = None
+            return head
+        elif remove_count < slow_counter:
+            slow_counter = 1
+            if slow_counter == remove_count:
+                if head.next != None:
+                    head = head.next
+                    return head
+                else:
+                    head = None
+                    return head
+            else:
+                new_head = head
+                while (slow_counter+1) != remove_count:
+                    head = head.next
+                    slow_counter += 1
+                head.next = head.next.next
+                return new_head
+        else:
+            slow_counter = 1
+            if slow_counter == remove_count:
+                if head.next != None:
+                    head = head.next
+                    return head
+                else:
+                    head = None
+                    return head
+            else:
+                new_head = head
+                while (slow_counter+1) != remove_count:
+                    head = head.next
+                    slow_counter += 1
+                if head.next.next != None:
+                    head.next = head.next.next
+                else:
+                    head.next = None
+                return new_head
+
+
+# Solution 2: # TC - O(n) - this is becuase its  a linked list you will have to travel through all the elements once in order to do ANYTHING. 
+# This is a very simple and subtle approach where we just keep the gap between two pointers to be n+1(indirectly) and increment them till the polinter whih is in
+#  front reaches the end of the linked list and so automatically the pointer at the back will be at the element whose next element is to be replaced and then we
+#  juts need to change its next pointer to point to the next to next node.
+# SC - O(1) since we are only using pointers throughout and no such structure which takes space.
+
+# TC - O(n) - although there are two while loop its going through the entire linked list only once. SC - O(1) since only pointers are used and no extra space is taken.
+class Solution:
+    def removeNthFromEnd(self, head: Optional[ListNode], n: int) -> Optional[ListNode]:
+        fast = head
+        slow = head
+        while n>0:
+            fast = fast.next
+            n -= 1
+        while fast and fast.next:
+            fast = fast.next
+            slow = slow.next
+        
+        if not fast:
+            slow = slow.next
+            return slow
+        else:
+            slow.next = slow.next.next
+        return head
+
+
+
+# Solution Methods:-
+    # 1- 2- explained above.
+
+# Thoughts on the Problem and Challenges:-
+    # 1- Was to realize to provide two pointers with a difference of n between them.
+
+# Learnings for a beginner in this problem:-
+    # 1- firguring out creative ways to solve the problem.
+
+# Date - 17/06/24
+# Time - 15 min
+
+    
+
+
+
