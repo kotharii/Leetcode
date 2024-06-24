@@ -1,0 +1,103 @@
+# Problem (link):- https://leetcode.com/problems/reorder-list/
+
+# Notes-
+# 1- Once you read the question, you do get an intuition as to how you are going to try to approach it by either reversing the linkedlist or make one pointer reach the end of the linked list and then try to take one node
+#  from the start and one node from the back one after the other after having reversed the list.
+# 2- one should realize that one will have to reverse the linked list in order to solve this question.
+
+# Solution 1: # TC - O(n) - this is becuase its  a linked list you will have to travel through all the elements once in order to do ANYTHING, Moreover to be specific to this question, the first loop using the fast and slow
+#  pointers it iterates over atleast n/2 nodes in the linked list and so when we remove the constant it is O(n), when we consider the second while loop which goes on for the second half of the linked list in order to
+#  reverse it will always iterate over at least n/2 nodes making it also O(n) after removing constant, and finally when the last loop changes the pointers for each of the node in order to reorder it the way it has been
+#  asked in the question we traverse the whole linked list once and so that also give O(n) and the total becomes 3n but 3n after having removed the constant is back at O(n). So the time complexity is O(n).
+# SC - O(1) since we are only using pointers throughout and no such structure which takes space.
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+class Solution:
+    def reorderList(self, head: Optional[ListNode]) -> None:
+        slow, fast = head, head.next
+        while fast and fast.next:
+            slow = slow.next
+            fast = fast.next.next
+        tail = slow.next
+        slow.next = None
+        previous = None
+        if tail != None:
+            while tail.next:
+                nxt = tail.next
+                tail.next = previous
+                previous = tail
+                tail = nxt
+            tail.next = previous
+
+        while head.next and tail and tail.next:
+            nuxt = head.next
+            head.next = tail
+            nexter = tail.next
+            tail.next = nuxt
+            head = nuxt
+            tail = nexter
+        nuxt = head.next
+        head.next = tail
+        if nuxt:
+            tail.next = nuxt
+
+
+# Solution 2: # TC - O(n) - this is becuase its  a linked list you will have to travel through all the elements once in order to do ANYTHING, Moreover to be specific to this question, the first loop using the fast and slow
+#  pointers it iterates over atleast n/2 nodes in the linked list and so when we remove the constant it is O(n), when we consider the second while loop which goes on for the second half of the linked list in order to
+#  reverse it will always iterate over at least n/2 nodes making it also O(n) after removing constant, and finally when the last loop changes the pointers for each of the node in order to reorder it the way it has been
+#  asked in the question we traverse the whole linked list once and so that also give O(n) and the total becomes 3n but 3n after having removed the constant is back at O(n). So the time complexity is O(n).
+# SC - O(1) since we are only using pointers throughout and no such structure which takes space.
+class Solution:
+    def reorderList(self, head: Optional[ListNode]) -> None:
+        if not head.next:
+            return
+        slow, fast = head, head.next
+        while fast and fast.next:
+            slow = slow.next
+            fast = fast.next.next
+        nxt = slow.next
+        slow.next = None
+        slow = nxt
+        previous = None
+        while slow: 
+            nuxt = slow.next
+            slow.next = previous
+            previous = slow
+            slow = nuxt
+        while head.next and previous.next:
+            forward = head.next
+            head.next = previous
+            backward = previous.next
+            previous.next = forward
+            head = forward
+            previous = backward
+        forward = head.next
+        head.next = previous
+        backward = previous.next
+        previous.next = forward
+
+
+
+# Solution Methods:-
+    # 1- In this solution there are 3 steps that are being taken:-
+        # i- using fast and slow pointers in order to get to know the middle point of the linked list.
+        # ii- reversing the second half of the list because we will need to traverse form the last node to the middle node in order to be able to append each node after the other for the reordering of the linked list.
+        # iii- traversion the linked list in such a manner that first the head is considered and moves ahead a node and the the tail is conisdered and moves ahead a node while pointing to each other during this process.
+    # 2- This solution is exactly the same as above except for it being a little bit more concise and better handled.
+
+# Thoughts on the Problem and Challenges:-
+    # 1- The main challenege in this problem (in optimizing it) was to figure out the usage of fast and slow pointers in order to find the middle point of the linked list, once a person realizes how to fnd the middle point
+        #  then its almost intuitive that the second half will need to be reversed and pointers in the whole of likedlist will just need to be adjusted in order to achieve the solution.
+
+# Learnings for a beginner in this problem:-
+    # 1- how to find the mid-point
+    # 2- maybe figuring out that you only need to reverse the second half of the linked list.
+
+# Date - 17/06/24
+# Time - 15 min
+
+# Learnt about fast and slow pointer, so now ik it can be used for two things:-
+# 1- It can be used to find the middle point in a data structure that is not subscriptable
+# 2- It can be used to find if there is a cycle or not and if there is then how to find the node which facilitates it.
