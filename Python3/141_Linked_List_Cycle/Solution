@@ -1,0 +1,57 @@
+# Problem (link):- https://leetcode.com/problems/linked-list-cycle/
+
+# Notes-
+# 1- This is  fairly simple question. You just need to understand that the moment you encounter a node which is already visited then its a cycle otehrwise its a not.
+# 2- As i told you in the earlier problem, you have to be creative with your thinking rather than knowling all algorithms, even if you didn't already know the 
+# floyd's tortoise and hare method still this could be solved and rather very simply as shown in solution 2.
+
+# Solution 1: # TC - O(n) - since we run the loop in the worst case scenario till the slow pointer reaches the end of the linked-list.
+# SC - O(1) - since we dont use any extra structure to store any details, just pointers itself does the work for us.
+class Solution:
+    def hasCycle(self, head: Optional[ListNode]) -> bool:
+        if not head:
+            return False
+        else:
+            slow, fast = head, head.next
+            while slow!= fast and fast and fast.next:
+                slow = slow.next
+                fast = fast.next.next
+            if slow == fast:
+                return True
+            else:
+                return False
+
+# Solution 2: # TC - O(n) - since we only loop through the entire linked list once. SC - O(1) - we do not use any extra space (only pointer usage).
+class Solution:
+    def hasCycle(self, head: Optional[ListNode]) -> bool:
+        if not head:
+            return False
+        while head and head.next and head.val != "visited":
+            head.val = "visited"
+            head = head.next
+        if head.val == "visited":
+            return True
+        return False
+
+
+# Solution Methods:-
+    # 1- In this solution the standard floyd's tortoise and hare solution is implemented where we maintain two pointers and one moves by one and the other by 2 and
+    #  if they both end up meeting again then its obvious that the pointer that was having a jump of 2 has been a part of a cycle and have thus met slow pointer
+    #  again and there exists a cycle, otherwise if it had reached None then we would return False.
+    # 2- This solution is what i had initially though of before knowing the Floyd's algorithm, where my simple approach was that if a node is visited then visiting
+    #  it again will only let us know if its a cycle or not, so I just increment the head pointer everytime and if it reaches a node which has already been visited
+    #  then its a cycle and if not the there none.
+
+# Thoughts on the Problem and Challenges:-
+    # 1- Just knowling how to find a cycle in data structure (basic knwoledge) should be there.
+
+# Learnings for a beginner in this problem:-
+    # 1- understandting the floyd's algorithm and why does the fast and slow pointer eventually meet.
+
+# Date - 18/06/24
+# Time - 5 min
+
+# Learnt about fast and slow pointer, so now ik it can be used for two things:-
+# 1- It can be used to find the middle point in a data structure that is not subscriptable
+# 2- It can be used to find if there is a cycle or not and if there is then how to find the node which facilitates it.
+            
