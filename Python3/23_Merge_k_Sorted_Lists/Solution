@@ -1,0 +1,64 @@
+# Problem (link):- https://leetcode.com/problems/merge-k-sorted-lists/
+
+# Notes-
+# 1- This is relatively a tough question, since you need either of the 2 things to strike you 1- its similar to merge sort 2- you have already solved the merge two
+#  sorted lissts then you can utilize that in thsi.
+
+# Solution 1: # TC - O((n+m)klogk) - This is a little complex so i'll make you understand it in step by step, one major thing to know before i explain you this is,
+#  if there exists simple loop(fir eg for loop) and within that tehre is a function which is being called everytime and that function consists of a for loop then you
+#  have to consider that this for loop is a nested for loop within the main for loop, and thus the time complexity will be taken from this pair of nested loops.
+# So the TC is O((n+m)klogk) since first it goes through the while loop O(log k) times, since while loop will be executed each and everytime with half the size of the len of the lists previously provided.
+#  The for loop within this while loop will run for k/2 because of the increment by 2 that is happening everytime, where k = len(lists) so it'll in the end be O(k)
+#  times and then further since merge function is being callled within the for loop each tiem where the merge fucntion itself has a loop which runs O(m+n) (because
+#  of going through all list1 and list2 elements in the worst case scenario) therefore it'll become O(k*(m+n)).
+# SC - O(k) since we will be storing the lists within it and in the worst case scenario k/2.
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+class Solution:
+    def mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
+        if not lists or len(lists) == 0:
+            return
+        
+        while len(lists) > 1:
+            sorted_lists = []
+            for i in range(0, len(lists), 2):
+                list1 = lists[i]
+                if (i+1) < len(lists): 
+                    list2 = lists[i+1]
+                else:
+                    list2 = None
+                sorted_lists.append(self.merge(list1, list2))
+            lists = sorted_lists
+        return lists[0]
+        
+    def merge(self, list1: List[Optional[ListNode]], list2: List[Optional[ListNode]]):
+        dummy = ListNode()
+        current = dummy
+        while list1 and list2:
+            if list1.val <= list2.val:
+                current.next = list1
+                list1 = list1.next
+            else:
+                current.next = list2
+                list2 = list2.next
+            current = current.next
+        if list1:
+            current.next = list1
+        else:
+            current.next = list2
+        return dummy.next
+
+# Solution Methods:-
+    # 1- In this solution I am using the two sorted liked lists solution in order to solve this.
+
+# Thoughts on the Problem and Challenges:-
+    # 1- This is a little bit difficult, since to strike that mergesort is the way to go.
+
+# Learnings for a beginner in this problem:-
+    # 1- how to use a dummy node.
+
+
+# Date - 19/06/24
+# Time - 1 hr
