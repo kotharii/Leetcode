@@ -1,0 +1,69 @@
+# Problem (link):- https://leetcode.com/problems/invert-binary-tree/
+
+# Notes-
+# 1- This is an easy question, since in this you just have to realize that its all oon the change of pointers that this sum will be able to be solved.
+# Try coming up with an iterative solution instead of recursive, Iterative > Recursive 
+
+# Solution 1: # TC - O(n) - since it is visiting each node only once when that node behaves as the root node to reverse its children 
+# SC - O(n) - since in the worst case scenario it will store all the nodes in the call stack if the binary tree is such that it consists of only left children all along.
+class Solution:
+    def invertTree(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
+        if not root:
+            return 
+        left_node = self.invertTree(root.left)
+        right_node = self.invertTree(root.right)
+        root.left = right_node
+        root.right = left_node
+        return root
+    
+# TC - O(n) - since it will still be visiting each node in order to check if it has children or not and if it does then to swap their pointers.
+# SC - O(n) - since the queue will still be in the worst case scenario taking a lot of the elements it can go beyond n/2 which is nothing but O(n)
+class Solution:
+    from collections import deque
+    def invertTree(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
+        if not root:
+            return
+        queue = deque([root])
+
+        while queue:
+            current = queue.popleft()
+
+            if current:
+                current.left, current.right = current.right, current.left
+                queue.append(current.left)
+                queue.append(current.right)
+        return root
+
+# Solution Methods:-
+    # 1- In this solution I first recursively reach the leaf node and from there on out, i just make each parent nodes' left pointer to right pointer and vice versa
+    #  and keep doing this till i reach the root node.
+    # 2- This is the same solution just in Iteratvie format, where in the only change is we first take the root node and from there on out considering the children
+    #  we change their pointers and then traverse upon these children nodes till we reach the lead nodes.
+
+# Thoughts on the Problem and Challenges:-
+    # 1- None
+
+# Learnings for a beginner in this problem:-
+    # 1- how to traverse and change pointers
+    # The 3 reasons everybody should know why Iterative solutions are better than Recursive Solutions:
+    # Stack Space Usage:
+
+    # Iterative: Iterative solutions use the stack space for only a few variables, which makes them more memory-efficient.
+    # Recursive: Recursive solutions use the call stack extensively, which can lead to stack overflow if the recursion depth is too deep. Each function call adds a 
+    # new frame to the call stack, consuming more memory.
+    # Function Call Overhead:
+
+    # Iterative: Iterative solutions have lower overhead because they avoid the extra cost associated with multiple function calls. Each function call in recursion
+    #  has an overhead due to saving the function state, arguments, and returning from the function.
+    # Recursive: Recursive solutions can incur significant overhead due to the large number of function calls, especially for deep recursions. This overhead can slow
+    #  down the execution.
+    # Cache Performance and Locality of Reference:
+
+    # Iterative: Iterative solutions often have better cache performance due to more predictable and linear memory access patterns. This predictability results in
+    #  fewer cache misses and better overall efficiency.
+    # Recursive: Recursive solutions can suffer from poor cache performance because of the more scattered and less predictable memory access patterns, which can
+    #  result in higher cache miss rates.
+
+
+# Date - 26/06/24
+# Time - 10 mins
