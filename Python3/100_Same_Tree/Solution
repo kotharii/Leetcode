@@ -1,0 +1,67 @@
+# Problem (link):- https://leetcode.com/problems/same-tree/
+
+# Notes-
+# 1- This is an easy question, since in this its only about thinking as to how can we compare the two tree simultaneously, cause we already know how we will be
+#  traversing it in order to reach the child or root nodes.
+# Try coming up with an iterative solution instead of recursive, Iterative > Recursive 
+
+# Solution 1: # TC - O(m+n) SC - O(m+n) where m is the length of the p tree and n is the lnegth of the q tree.
+class Solution:
+    from collections import deque
+    def isSameTree(self, p: Optional[TreeNode], q: Optional[TreeNode]) -> bool:
+        if not p and not q:
+            return True
+        q1 = deque([p])
+        q2 = deque([q])
+
+        while q1 and q2:
+            current_1 = q1.popleft()
+            current_2 = q2.popleft()
+            if current_1 and current_2:
+                if current_1.val == current_2.val:
+                    q1.append(current_1.left)
+                    q1.append(current_1.right)
+                    q2.append(current_2.left)
+                    q2.append(current_2.right)
+                else:
+                    return False
+            elif not current_1 and not current_2:
+                continue
+            else:
+                return False
+        if q1:
+            return False
+        elif q2:
+            return False
+        else:
+            return True
+    
+# Solution 2: TC - O(m+n) SC - O(m+n) where m is the length of the p tree and n is the length of the q tree.
+class Solution:
+    def isSameTree(self, p: Optional[TreeNode], q: Optional[TreeNode]) -> bool:
+        if not p and not q:
+            return True
+        if not p or not q or p.val != q.val:
+            return False
+
+        return (self.isSameTree(p.left, q.left) and
+        self.isSameTree(p.right, q.right))
+
+# Solution Methods:-
+    # 2- In this solution I first recursively check if the current node has any value mismatch/ structure mismatch and if not then i let it recursively explore the
+    #  rest of the tree, just by passing the left or right side together into the recursive function.
+    # 1- This is the same solution just in Iteratvie format, where in the only change is we first take the root node and we only append the next node(children node)
+    #  if and only if the curent nodes in p and q tree match each other in value and thus in this way it will automatically take care of the structure and we just
+    #  have to take care of the values matching and if they dont there and there itself it returns false.
+
+# Thoughts on the Problem and Challenges:-
+    # 1- recursively following the tree while comparing it.
+
+# Learnings for a beginner in this problem:-
+    # 1- how to traverse this tree in recursive format WHILE comparing both
+
+# Date - 27/06/24
+# Time - 15 mins
+
+
+
