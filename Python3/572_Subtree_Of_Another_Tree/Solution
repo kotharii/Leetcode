@@ -1,0 +1,96 @@
+# Problem (link):- https://leetcode.com/problems/subtree-of-another-tree/
+
+# Notes-
+# 1- This is an easy question if the same tree comparision question is done before, since in this its only about thinking as to how can we reach the node in the root
+#  tree which is the same as the one in the subroot tree and if the rest of THAT subtree does not follow through then how to catch up with the other child of the
+#  parent root tree, compare the two tree simultaneously, cause we already know how we will be traversing it in order to reach the child or root nodes.
+# Try coming up with an iterative solution instead of recursive, Iterative > Recursive 
+
+# Solution 1: # TC - O(m * n) where m is the number of nodes present in the root tree and n is the number of nodes present in the subroot tree.
+# SC - O(h + k) where h is the height of the root tree and k is the height of the subroot tree
+class Solution:
+    def isSubtree(self, root: Optional[TreeNode], subRoot: Optional[TreeNode]) -> bool:
+        if not subRoot:
+            return True
+        if not root:
+            return False
+        if self.isSametree(root, subRoot):
+            return True
+        return self.isSubtree(root.left, subRoot) or self.isSubtree(root.right, subRoot)
+        
+    def isSametree(self, s: Optional[TreeNode],t: Optional[TreeNode]):
+        if not s and not t:
+            return True
+        if s and t and s.val == t.val:
+            return self.isSametree(s.left, t.left) and self.isSametree(s.right, t.right)
+        return False
+    
+# Solution 2: O(m * n) where m is the number of nodes present in the root tree and n is the number of nodes present in the subroot tree.
+# SC - O(h + k) where h is the height of the root tree and k is the height of the subroot tree
+class Solution:
+    from collections import deque
+    def isSubtree(self, root: Optional[TreeNode], subRoot: Optional[TreeNode]) -> bool:
+        if not subRoot:
+            return True
+        if not root:
+            return False
+        
+        main_queue = deque([root])
+        
+        while main_queue:
+            current = main_queue.popleft()
+            
+            if current.val == subRoot.val:
+                if self.checkSubtree(current, subRoot):
+                    return True
+            
+            if current.left:
+                main_queue.append(current.left)
+            if current.right:
+                main_queue.append(current.right)
+                
+        return False
+    
+    def checkSubtree(self, root: TreeNode, subRoot: TreeNode) -> bool:
+        main_queue = deque([root])
+        sub_queue = deque([subRoot])
+        
+        while main_queue and sub_queue:
+            main_node = main_queue.popleft()
+            sub_node = sub_queue.popleft()
+            
+            if not main_node and not sub_node:
+                continue
+            if not main_node or not sub_node:
+                return False
+            if main_node.val != sub_node.val:
+                return False
+            
+            main_queue.append(main_node.left)
+            main_queue.append(main_node.right)
+            sub_queue.append(sub_node.left)
+            sub_queue.append(sub_node.right)
+        
+        return not sub_queue
+
+# Solution Methods:-
+    # 1- In this solution I first recursively check if the current node has any value mismatch/ structure mismatch and if not then i let it recursively explore the
+    #  rest of the tree, just by passing the left or right side together into the recursive function.
+    # 2- This is the same solution just in Iteratvie format. This is a little bit challenging as in this the only change is we first take the root node and we only append the next node(children node)
+    #  if and only if the curent nodes in p and q tree match each other in value and thus in this way it will automatically take care of the structure and we just
+    #  have to take care of the values matching and if they dont there and there itself it returns false.
+
+# Thoughts on the Problem and Challenges:-
+    # 1- in the iterative format it is difficult to keep track of both the right and the left child node together if you are not considering to make another function
+    #  in order to compare the two trees' nodes simultaneously.
+
+# Learnings for a beginner in this problem:-
+
+# Date - 03/07/24
+# Time - 10 mins
+
+
+
+
+
+
