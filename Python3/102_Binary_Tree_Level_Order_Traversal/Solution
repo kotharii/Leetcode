@@ -1,0 +1,39 @@
+# Problem (link):- https://leetcode.com/problems/binary-tree-level-order-traversal/
+
+# Notes-
+# 1- The question is pretty straightforward, you just have to find a way to put the nodes at one level into a list and of another level into another one.
+
+# Solution 1: # TC - O(n) - n being the number of nodes present in the tree, this is becasue we are traversing each node once.
+# SC - O(n) - this is because of the answer list taking space of the number of nodes in the tree in order to represent them, and also the queue can contain at one time n/2 nodes in it.
+class Solution:
+    from collections import deque
+    def levelOrder(self, root: Optional[TreeNode]) -> List[List[int]]:
+        answer = []
+        queue = deque([root])
+
+        while queue:
+            length = len(queue)
+            level = []
+            for i in range(length):
+                current = queue.popleft()
+                if current:
+                    level.append(current.val)
+                    queue.append(current.left)
+                    queue.append(current.right)
+            if level:
+                answer.append(level)
+        return answer
+
+# Solution Methods:-
+    # 1- This method is very simple where i just traverse the tree in a breadth first search manner which just puts the nodes at different level into a level list
+    #  and that level ist is then appended to the answer list to achieve a final list with levels list.
+
+# Thoughts on the Problem and Challenges:-
+    # how to change levels and append them to the answer list in the correct manner.
+
+# Learnings for a beginner in this problem:-
+    # 1- BFS
+
+
+# Date - 04/07/24
+# Time - 10 min
