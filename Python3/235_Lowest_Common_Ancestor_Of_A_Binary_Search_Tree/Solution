@@ -1,0 +1,77 @@
+# Problem (link):- https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/
+
+# Notes-
+# 1- This is an easy question if the same tree comparision question is done before, since in this its only about thinking as to how can we reach the node in the root
+#  tree which is the same as the one in the subroot tree and if the rest of THAT subtree does not follow through then how to catch up with the other child of the
+#  parent root tree, compare the two tree simultaneously, cause we already know how we will be traversing it in order to reach the child or root nodes.
+# Try coming up with an iterative solution instead of recursive, Iterative > Recursive 
+
+# Solution 1: # TC - O(n) where n is the size of the tree(number of nodes present in the tree root)
+# SC - O(n) where n is the size of the tree(number of nodes present in the tree root)
+class Solution:
+    def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
+        if not root:
+            return None
+        if root.val == p.val or root.val == q.val:
+            return root
+
+        left_node = self.lowestCommonAncestor(root.left, p, q)
+        right_node = self.lowestCommonAncestor(root.right, p, q)
+        
+        if left_node and right_node:
+            return root
+        if left_node:
+            return left_node 
+        else:
+            return right_node
+    
+# Solution 2: # TC - O(log n) where n is the size of the tree(number of nodes present in the tree root), log n since it will at max only traverse the height of the tree.
+# SC - O(1) since no extra space is being used for the same.
+class Solution:
+    def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
+        cur = root
+
+        while cur:
+            if (p.val < cur.val and q.val < cur.val):
+                cur = cur.left
+            elif (p.val > cur.val and q.val > cur.val):
+                cur = cur.right
+            elif p.val == cur.val or q.val == cur.val:
+                return cur
+            if (p.val < cur.val and q.val > cur.val) or (p.val > cur.val and q.val < cur.val):
+                return cur
+            
+# Solution 3: # TC - O(log n) where n is the size of the tree(number of nodes present in the tree root), log n since it will at max only traverse the height of the tree.
+# SC - O(log n) where n is the size of the tree(number of nodes present in the tree root), log n since it will at max only traverse the height of the tree which can
+    #  be in the worst case be present entirely in the call stack.
+class Solution:
+    def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
+        if p.val == root.val or q.val == root.val:
+            return root
+        if (p.val < root.val and q.val > root.val) or (p.val > root.val and q.val < root.val):
+            return root
+        if (p.val < root.val and q.val < root.val):
+            return self.lowestCommonAncestor(root.left, p, q)
+        else:
+            return self.lowestCommonAncestor(root.right, p, q)
+
+# Solution Methods:-
+    # 1- In this solution, a very simple DFS approach has been taken, where you traverse each and every node and return the node value which has its children as p & q.
+    # 2- This is a very simple and smart solution as this is where only the values are compared, as it is clear that in a binary search tree the left child of every
+        #  node is less than its own value and the right child is more than its own value and so using thse conditions, you can easily make under which condition the 
+        # lowest common ancestor can exist and return it accordingly.
+    # 3- This is the same approach as the second solution but just in case someone has used a recursive call instead of a simple loop.
+        
+# Thoughts on the Problem and Challenges:-
+    # 1- very easy, shouldn't have any problem.
+
+# Learnings for a beginner in this problem:-
+
+# Date - 04/07/24
+# Time - 20 mins
+
+
+
+
+
+
