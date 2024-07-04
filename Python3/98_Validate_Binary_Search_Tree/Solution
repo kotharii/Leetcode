@@ -1,0 +1,13 @@
+# TC - O(n) - 2n operations as each node will require 2 recursive calls n order to validate themselved, one for left child and one for right child.
+# SC - O(n) - since in the worst case scenario the recursive callstack can consist of n calls if each node consists of only one child.
+class Solution:
+    def isValidBST(self, root: TreeNode) -> bool:
+        def conditional(root: TreeNode, lowerlimit: float, upperlimit: float):
+            if not root:
+                return True
+            if not (root.val < upperlimit and root.val > lowerlimit):
+                return False
+                
+            return (conditional(root.left, lowerlimit, root.val) and 
+            conditional(root.right, root.val, upperlimit))
+        return conditional(root, float('-inf'), float('inf'))
