@@ -1,4 +1,13 @@
-# TC - O(n) - 2n operations as each node will require 2 recursive calls n order to validate themselved, one for left child and one for right child.
+# Problem (link):- https://leetcode.com/problems/validate-binary-search-tree/
+
+# Notes-
+# 1- I wasn't able to come up with the correct code for this question, Got to know that my fundamental understanding of the Binary search tree wasnt accurate, 
+# Learnt a very interesting thing that for example there is a root node and its value is 5 and this root node has a right child node and that child has a left child
+#  node then that left child node must be smaller than th right child node of the root BUT ALSO BE GREATER THAN THE ROOT NODE VALUE, and this understanding i didn't
+#  have earlier. So has written just a code that compared the two children and gave the answer as true or false.
+# Try coming up with an iterative solution instead of recursive, Iterative > Recursive 
+
+# Solution 1: # TC - O(n) - 2n operations as each node will require 2 recursive calls n order to validate themselved, one for left child and one for right child.
 # SC - O(n) - since in the worst case scenario the recursive callstack can consist of n calls if each node consists of only one child.
 class Solution:
     def isValidBST(self, root: TreeNode) -> bool:
@@ -11,3 +20,28 @@ class Solution:
             return (conditional(root.left, lowerlimit, root.val) and 
             conditional(root.right, root.val, upperlimit))
         return conditional(root, float('-inf'), float('inf'))
+
+# Solution Methods:-
+    # 1- In this solution, an approach is taken where the learning that you made(written above in notes) can be implemented and so the value of the upper and lower
+    #  limits are passed whenever they change so that we can always make sure that ALL numbers in the right subtree of the root tree are greater than the root node
+    #  value and similarly ALL numbers in the left subtree of the root tree are smaller than the root node value.
+        
+# Thoughts on the Problem and Challenges:-
+    # 1- Should know the fundamentals and properties of the binary search tree. Should know the edge cases.
+    # 2- get to learn the new approaches of passing values in a tree to make limits.
+
+# Learnings for a beginner in this problem:-
+    # 1 - Get to understand the fundamentals of a binary tree even better.
+
+# Date - 11/07/24
+# Time - 2hrs
+
+
+
+
+
+
+
+
+
+
