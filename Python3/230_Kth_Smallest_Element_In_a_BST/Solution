@@ -1,0 +1,54 @@
+# Problem (link):- https://leetcode.com/problems/kth-smallest-element-in-a-bst/
+
+# Notes-
+# 1- This question requires a particular traversal of the BST in order to find the correct answer, If you dont know this method it becomes particularly difficult to
+#  find the answer. 
+# This question needs IN-ORDER traversal of the BST in order to find the answer. 
+# Try coming up with an iterative solution instead of recursive, Iterative > Recursive 
+
+# Solution 1: # TC - O(n) since the while loop will run in the worst case scenario till the number of nodes are exhausted when k provided is equal to the number of nodes in the BST.
+# SC - O(n) since in the worst case scenario if the BST is entirely skewed then it might contain all n nodes.
+class Solution:
+    from collections import deque
+    def kthSmallest(self, root: Optional[TreeNode], k: int) -> int:
+        stack = []
+        current = root
+        
+        while stack or current:
+            if current:
+                stack.append(current)
+                current = current.left
+            else:
+                current = stack.pop()
+                k -= 1
+                if k == 0:
+                    return current.val
+
+# Solution Methods:-
+    # 1- In this solution, an iterative aproach is put so that one can traverse the tree in an inorder manner where you first take down the left child then the root and then the right
+    #  child. In this solution we have used the approach where we continuously keep on going to the left child node, then we automatically understand that if the left child node is None
+    #  then the node in current is itself the root node(smallest node value) because there is no left node to it(so no smaller value possible than this) and so we pop it(so we have 
+    #  already gotten left child node which is None which we just dont add to the answer list and then root node of this subtree) and then we check if this root node has a right child
+    #  since if it did that would be the node which would contain the second smallest number since the parent can only have a number which is greater than of all its child in the left
+    #  subtree, and so if this existed then we would add it to the top of the stack and remove itself in the next iteration(if it doesnt have a left child node) since that would be the
+    #  only node left in this left small subtree and in order traversal since the left child(None) and root(smallest number) are taken care off. Further you should understand that if
+    #  there was no right child then we would have popped another element from the stack as no left and right child means that the second smallest node has to be the parent of the
+    #  smallest node since that left child node has no right child and that is already stored in the stack when we came down the left subtree.
+    
+    # HAVE NOT IMPLEMENTED THE BELOW SOLUTIONS BUT YOU ARE FREE TO TRY TO AND THEY WILL DEFINITELY WORK WITH ONLY A FEW TWEAKING TO FIND THE Kth SMALLEST NUMBER.
+
+    # 2- This is nothing but the same solution in recursive format which is pretty easy in itself.
+    # 3- This is an approach known as MORRIS traversal, which is very good as it does not take O(n) space like above solution only does it in O(1)space complexity, it achieves this by
+    #  making 2n operations instead of n and by creating a temporary thread from the right most child of a subtree to the parent of that subtree, which helps it in navigating back to
+    #  the parent once that right child node is visited.
+                
+# Thoughts on the Problem and Challenges:-
+    # 1- Very easy but very interesting problem if you approach it iteratively or using morris traversal method.
+
+# Learnings for a beginner in this problem:-
+    # 1- morris traversal method
+    # 2- if one already doesnt know then pre-order, inorder and postorder
+    # 3- how can one find out creative solutions to decrease space complexity by increase just the operatiosn and still maintaining time complexity.
+                
+# Date - 12/07/24
+# Time - 1 hr
