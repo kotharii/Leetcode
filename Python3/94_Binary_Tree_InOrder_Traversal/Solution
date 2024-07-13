@@ -1,0 +1,97 @@
+# Problem (link):- https://leetcode.com/problems/binary-tree-inorder-traversal/
+
+# Notes-
+# 1- This question requires a particular traversal of the BST in order (lol it is inorder) to find the correct answer, If you dont know this method it becomes particularly difficult to
+#  find the answer. 
+# This question needs IN-ORDER traversal of the BST in order to find the answer. 
+# Try coming up with an iterative solution instead of recursive, Iterative > Recursive 
+
+# Solution 1: # TC - O(n) - since in the worst case scenario the while loop will go as long as there are elements in the stack and the stack has n elements in the worst case if the tree is absolutely skewed.
+# SC - O(n) since in the worst case scenario when the tree is absolutely skewed, the stack will consits of n nodes in it.
+class Solution:
+    def inorderTraversal(self, root: Optional[TreeNode]) -> List[int]:
+        stack = []
+        current = root
+        answer = []
+
+        while stack or current:
+            if current:
+                stack.append(current)
+                current = current.left
+            else:
+                current = stack.pop()
+                answer.append(current.val)
+                current = current.right
+        return answer
+    
+# Solution 2: # TC - O(n) - since in the worst case scenario the while loop will go as long as there are elements in the stack and the stack has n elements in the worst case if the tree is absolutely skewed.
+# SC - O(n) since in the worst case scenario when the tree is absolutely skewed, the call stack will consist of n nodes in it.
+class Solution:
+    def inorderTraversal(self, root: Optional[TreeNode]) -> List[int]:
+        answer = []
+        def helper(root):
+            if not root:
+                return False
+            helper(root.left)
+            answer.append(root.val)
+            helper(root.right)
+        helper(root)
+        return answer
+            
+# Solution 3: # MORRIS TRAVERSAL (INORDER) METHOD --> Takes SPACE complexity as O(1) only as compared to other usualy methods above which take O(n).
+# TC - O(n) --> operations taken are 2n, actually more than that but when asked chatgpt it said that we only calculate the operations that the algorithms takes in order work and not to maintain itself.
+# if you want to know more on which operations count towards time complexity and which dont:
+#     Why Pointer Movements to Find prev Are Different
+
+# 	•	The operations involved in moving prev to find the rightmost node are indeed operations by definition, but they don’t constitute visits in the traditional sense (like those logged in an inorder, preorder, or postorder list). These are internal mechanics necessary for the algorithm to manage its state without additional memory.
+# 	•	This distinction is often made in algorithm analysis to differentiate between work that directly contributes to the algorithm’s output and internal housekeeping operations. For example, in a sorting algorithm, comparisons and swaps are typically counted when discussing complexity, rather than the iteration necessary to reach each element.
+
+# Summarizing the Impact on Complexity
+
+# 	•	While every movement of prev is an operation, not all operations weigh equally in complexity analysis. The linear complexity of Morris Traversal (O(N)) is derived from the fact that each node is involved in a finite, manageable number of operations that directly impact the traversal’s result.
+# 	•	Counting every single pointer movement in the complexity analysis would provide a more granular view, but for high-level analysis, particularly in terms of time complexity impacting the output, the focus is generally on those operations that directly affect the traversal outcome.
+class Solution:
+    def inorderTraversal(self, root: Optional[TreeNode]) -> List[int]:
+        answer = []
+        current = root
+        while current:
+            if current.left == None:
+                answer.append(current.val)
+                current = current.right
+            else:
+                prev = current.left
+                while prev.right and prev.right != current:
+                    prev = prev.right
+                if prev.right == None:
+                    prev.right = current
+                    current = current.left
+                else:
+                    prev.right = None
+                    answer.append(current.val)
+                    current = current.right
+        return answer
+
+# Solution Methods:-
+    # 1- In this solution, an iterative aproach is put so that one can traverse the tree in an inorder manner where you first take down the left child then the root and then the right
+    #  child. In this solution we have used the approach where we continuously keep on going to the left child node, then we automatically understand that if the left child node is None
+    #  then the node in current is itself the root node because there is no left node to it and so we pop it(so we have already gotten left which is None which we just dont add to the
+    #  answer list and then root node of this subtree) and then we check if this root node has a right child since if it did that would be the node we would add to the top of the stack
+    #  and remove since that would be the only node left in the subtree and in order traversal since the left child and root are taken care off. Further you should understand that if
+    #  there was no right child then we would have popped another element from the stack as no left and right child means that the only node to be counted on next is the parent and
+    #  that is already stored in the stack when we came down the left subtree.
+    # 2- This is nothing but the same solution in recursive format which is pretty easy in itself.
+    # 3- This is an approach known as MORRIS traversal, which is very good as it does not take O(n) space like above solution only does it in O(1)space complexity, it achieves this by
+    #  making 2n operations instead of n and by creating a temporary thread from the right most child of a subtree to the parent of that subtree, which helps it in navigating back to
+    #  the parent once that right child node is visited.
+        
+# Thoughts on the Problem and Challenges:-
+    # 1- Very easy but very interesting problem if you approach it iteratively or using morris traversal method.
+
+# Learnings for a beginner in this problem:-
+    # 1- morris traversal method
+    # 2- if one already doesnt know then pre-order, inorder and postorder
+    # 3- how can one find out creative solutions to decrease space complexity by increase just the operatiosn and still maintaining time complexity.
+
+# Date - 13/07/24
+# Time - 3 hrs
+        
