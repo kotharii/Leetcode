@@ -1,0 +1,83 @@
+# Problem (link):- https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/
+
+# Notes-
+# 1- This is an easy question, since in this one, one just needs to realize that in order to find the maximum depth you at the end of the day just pass a number from
+#  the children nodes to its parent telling the depth level.
+# Try coming up with an iterative solution instead of recursive, Iterative > Recursive 
+
+# Solution 1: # TC - O(n) since it goes through each node in order to determine its left and right child nodes
+# SC - O(n) since in the worst case scenario if the tree is entirely skewed then the call stack might contain all the nodes in the tree provided, for example when the tree's only has left child 
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+class Solution:
+    def buildTree(self, preorder: List[int], inorder: List[int]) -> Optional[TreeNode]:
+        if not preorder or not inorder:
+            return None
+        root = TreeNode(preorder[0])
+        part = inorder.index(preorder[0])
+        root.left = self.buildTree(preorder[1:part+1], inorder[:part])
+        root.right = self.buildTree(preorder[part+1:], inorder[part+1:])
+        return root
+    
+
+# Solution 2: # TC - O(n) since it goes through each node in order to determine its left and right child nodes
+# SC - O(n) since in the worst case scenario if the tree is entirely skewed then the call stack might contain all the nodes in the tree provided, for example when the tree's only has left child 
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+class Solution:
+    def buildTree(self, preorder: List[int], inorder: List[int]) -> Optional[TreeNode]:
+        def helper(start, end):
+            if start > end:
+                return None
+            nonlocal i
+            root = preorder[i := i + 1]
+            part = dictionary[root]
+            left = helper(start, part-1)
+            right = helper(part+1, end)
+            return TreeNode(root, left, right)
+        dictionary = {}
+        i = -1
+        for j in range(len(inorder)):
+            dictionary[inorder[j]] = j
+        return helper(0, len(preorder) - 1)
+    
+# Solution Methods:-
+    # 1- In this solution I first recursively reach the leaf node and from there on out, I just pass onto the parent nodes the depth level incrementally. Leaf nodes
+    #  return 1, and otherwise since there can be left children nodes and right children nodes and any one can have more number of children so then the parent taking
+    #  the one who has a higher number of childrens and therefore depth.
+    # 2- This is the same solution just in Iteratvie format, where in the only change is we first take the root node and from there on out considering the level at
+    #  which the childrens are at we increment the depth level.
+
+# Thoughts on the Problem and Challenges:-
+    # 1- None
+
+# Learnings for a beginner in this problem:-
+    # 1- how to traverse and consider levels in a tree
+    # The 3 reasons everybody should know why Iterative solutions are better than Recursive Solutions:
+    # Stack Space Usage:
+
+    # Iterative: Iterative solutions use the stack space for only a few variables, which makes them more memory-efficient.
+    # Recursive: Recursive solutions use the call stack extensively, which can lead to stack overflow if the recursion depth is too deep. Each function call adds a 
+    # new frame to the call stack, consuming more memory.
+    # Function Call Overhead:
+
+    # Iterative: Iterative solutions have lower overhead because they avoid the extra cost associated with multiple function calls. Each function call in recursion
+    #  has an overhead due to saving the function state, arguments, and returning from the function.
+    # Recursive: Recursive solutions can incur significant overhead due to the large number of function calls, especially for deep recursions. This overhead can slow
+    #  down the execution.
+    # Cache Performance and Locality of Reference:
+
+    # Iterative: Iterative solutions often have better cache performance due to more predictable and linear memory access patterns. This predictability results in
+    #  fewer cache misses and better overall efficiency.
+    # Recursive: Recursive solutions can suffer from poor cache performance because of the more scattered and less predictable memory access patterns, which can
+    #  result in higher cache miss rates.
+
+
+# Date - 26/06/24
+# Time - 10 mins
