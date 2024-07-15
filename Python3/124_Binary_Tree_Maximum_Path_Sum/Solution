@@ -1,0 +1,48 @@
+# Problem (link):- https://leetcode.com/problems/binary-tree-maximum-path-sum/
+
+# Notes-
+# 1- This is a question in which, it should strike you as to how you will be able to solve it since it is not very difficult, the only thing you ahve to keep in mind is to first check
+#  for all the edge cases, it is a hard sum only because there are many edge cases especially if someonne is solving on their own for the first time.
+# Try coming up with an iterative solution instead of recursive, Iterative > Recursive 
+
+# Solution 1: # TC - O(n) - since we go through each node only once
+# SC - O(n) - since in the worst case scenario the tree is entirely skewed and so the call stack can have n calls left within it.
+class Solution:
+    def maxPathSum(self, root: Optional[TreeNode]) -> int:
+        def helper(root):
+            if not root:
+                return [0,float('-inf')]
+            left, left_combined = helper(root.left)
+            right, right_combined = helper(root.right)
+            if root.right:
+                combined = max(left + right + root.val, left_combined, right_combined, root.val, right)
+            elif root.left:
+                combined = max(left + right + root.val, left_combined, right_combined, root.val, left)
+            else:
+                combined = max(left + right + root.val, left_combined, right_combined, root.val)    
+            return [max(left+root.val, right+root.val, root.val), combined]
+        combined = float('-inf')
+        answer1, answer2 = helper(root)
+        return max(answer1, answer2)
+    
+# Solution Methods:-
+    # 1- In this solution, we follow a pattern where we reach the leftmost child node and then while going up calculate the maximum values such that either one takes a path from root
+    #  to left child nodes or from root to right child nodes and if one wants to take a combined (left + right) child nodes then that is stored as a maximum and only passed above and
+    #  not considered one where one can still traverse that path since once combined is considered one cannot further travel any of the ndoes in that subtree without visiting a node
+    #  once again.
+    # 2- This is the same solution just in Iteratvie format, where in the only change is we first take the root node and from there on out considering the level at
+    #  which the childrens are at we increment the depth level.
+
+# Thoughts on the Problem and Challenges:-
+    # Dont beat yourself up if you werent able to get all the edge cases, nobody does, they all lying. Here are all the edge cases you should keep in mind:
+        # 1- A node by itself is being considered as a path(in this problem atleast)
+        # 2- There can exist a path without the root node itself included in it as the path having the maximum sum
+        # 3- Make sure your base case is such that it does not change negative values
+        # 4- consider multiple trees with negative values
+
+# Learnings for a beginner in this problem:-
+    # 1- How to notice edge cases and get rid of them once you have figured the crux of the problem.
+
+
+# Date - 15/07/24
+# Time - 1 hr
