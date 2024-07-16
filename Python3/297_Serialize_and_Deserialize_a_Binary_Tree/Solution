@@ -1,0 +1,53 @@
+# Problem (link):- https://leetcode.com/problems/serialize-and-deserialize-binary-tree/
+
+# Notes-
+# 1- In this question, for new people, serialization literally means nothing but to convert the data you have currently(for exmaple the tree they provided to you) to either string
+#  format or binary representation, what binary representation means is if you convert the numbers into binary rep format (5 = 101) and then return this over the network so less
+#  bandwidth and then are able to restore this structure from this string/binary representation that you passed.
+# Try coming up with an iterative solution instead of recursive, Iterative > Recursive 
+
+# Solution 1: # TC - O(n) - since we go through each node only once in both the serialize and deserialize functions so total operations would be 2n
+# SC - O(n) - since in the worst case scenario the tree is entirely skewed and so the call stack can have n calls left within it both in serialize and deserialize function.
+class Codec:
+    def serialize(self, root):
+        res = []
+        def dfs(root):
+            if not root:
+                res.append("None")
+                return
+            res.append(str(root.val))
+            dfs(root.left)
+            dfs(root.right)
+            return
+        dfs(root)
+        return ",".join(res)
+
+    def deserialize(self, data):
+        values = data.split(",")
+        self.i = 0
+        def dfs():
+            if values[self.i] == "None":
+                self.i += 1
+                return None
+            node = TreeNode(int(values[self.i]))
+            self.i += 1
+            node.left = dfs()
+            node.right = dfs()
+            return node
+        return dfs()
+    
+# Solution Methods:-
+    # 1- In this solution, we have first serialized the tree by following a simple preorder traversal and making sure that we convert this tree into a string format and so we have
+    #  done that using simple dfs and then having received this string we have created a tree wusing the deserializa function.
+
+# Thoughts on the Problem and Challenges:-
+    # 1- It is difficult to come up with the deserialization function since to accomodate an incrementers along with a recursive function is challenging.
+
+# Learnings for a beginner in this problem:-
+    # 1- What is serialization
+    # 2- what is deserialization
+    # 3- How can one convert any DS into a single string or its Binary rep
+
+
+# Date - 16/07/24
+# Time - 1 hr
