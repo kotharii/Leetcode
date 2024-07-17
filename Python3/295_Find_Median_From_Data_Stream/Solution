@@ -1,0 +1,62 @@
+# Problem (link):- https://leetcode.com/problems/find-median-from-data-stream/
+
+# Notes-
+# 1- In this question, for people who have not faced it before, it impossible to come up with a solution cause it requires extreme creative thinking.
+# Try coming up with an iterative solution instead of recursive, Iterative > Recursive 
+
+# Solution 1:# TC - O(n log n) - since we are inserting n total elements into either max heap or min heap, lets assume inserting n/2 elements in max heap takes n/2 log n time and therefore for the other half n/2 log n time in min heap(worst case all elements in one heap still n log n), then in the while loop while finding median too we will perform n log n operations, that is, removing in the worst case(min-heap no elements and max heap all elements) n/2 deletions from max-heap and n/2 insertions in min heap which is in total again O(n log n) in the worst case scenario.
+# SC - O(n) -even if there are two heaps in total they are only storing n elements.
+class MedianFinder:
+    import heapq
+    def __init__(self):
+        self.min_heap = []
+        self.max_heap = []
+
+    def addNum(self, num: int) -> None:
+        if not self.max_heap:
+            heapq.heappush(self.max_heap, -num)
+        elif num >= -self.max_heap[0]:
+            heapq.heappush(self.min_heap, num)
+        else:
+            heapq.heappush(self.max_heap, -num)
+
+    def findMedian(self) -> float:
+        maxer = len(self.max_heap)
+        miner = len(self.min_heap)
+        while maxer - miner > 1:
+            element = heapq.heappop(self.max_heap)
+            heapq.heappush(self.min_heap, -element)
+            maxer -= 1
+            miner += 1
+        while miner - maxer > 1:
+            element = heapq.heappop(self.min_heap)
+            heapq.heappush(self.max_heap, -element)
+            miner -= 1
+            maxer += 1
+        if maxer - miner == 1:
+            return -self.max_heap[0]
+        elif miner - maxer == 1:
+            return self.min_heap[0]
+        else:
+            return (((-self.max_heap[0]) + self.min_heap[0]) / 2)
+    
+# Solution Methods:-
+    # 1- In this solution, we created two heaps, one min heap and another max heap so that we can always have the middle elements at the top of each heap so the extraction of the 
+        # median will become O(1), this is done by maintaing this structure in such a way that:
+        # 1- There should not be a difference of more than 1 element between the two heaps (taken care by putting elements from the heap which has more elements into the heap that has
+        #  less elements until APPROXIMATELY(by 1) balance)
+    # Two ways we can find median:-
+        # 1- If there is a difference of 1 then its obvious that there are odd number of total elements and the heap with the more number of element's top element is the median
+        # 2- If there is no difference then it indicated even number of elements so we will take the average of the top of both maxheap and minheap element.
+
+# Thoughts on the Problem and Challenges:-
+    # 1- It is okay if you cannot come up with the solution if you are seeing this question for the first time.
+
+# Learnings for a beginner in this problem:-
+    # 1- How to utilize heap in the best manner
+    # 2- Practise with max and min heaps and shuffling between them
+
+
+# Date - 17/07/24
+# Time - 25 min
+
