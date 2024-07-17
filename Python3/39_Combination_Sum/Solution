@@ -1,0 +1,42 @@
+# Problem (link):- https://leetcode.com/problems/combination-sum/
+
+# Notes-
+# 1- This is the question in which you just have to think recursively, since backtracking is very easy to think of in recursion.
+# 2- Try to think of the case where you directly can avoid taking repeated elements in the first place.
+# Try coming up with an iterative solution instead of recursive, Iterative > Recursive 
+
+# Solution 1: # TC - O(2^t) - this is because at each possible candidate value we are exploring 2 paths and in worst case each path can contain atmost n-1 elements to be compared more with.
+# SC - O(t)
+class Solution:
+    def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
+        res = []
+
+        def dfs(i, cur, total):
+            if total == target:
+                res.append(cur.copy())
+                return
+            if total > target or i == len(candidates):
+                return
+            
+            cur.append(candidates[i])
+            dfs(i, cur, total + candidates[i])
+            cur.pop()
+            dfs(i+1, cur, total)
+        dfs(0, [], 0)
+        return res
+    
+    
+# Solution Methods:-
+    # 1- In this solution, recursively, one element is considered repeatedly until and unless it crosses the total and if it equals total we take note of it and if it doesnt then we go
+    #  back to that nodes parent node and consider every other element that itself, so it explores all possibilities with the combination of every other element present in the candidate
+    #  list to equal the total amount, so in this way we get all combinations that wouldd include this particular element and when we move on to the next element in the candidate list
+    #  we only consdier the remaining elements in the list and do not consider the ones that were already considered before which really helps in narrowing our search.
+
+# Thoughts on the Problem and Challenges:-
+    # 1- dont worry about the solution being n exponential time complexity it can be fixed further using dynamic programming.
+
+# Learnings for a beginner in this problem:-
+    # 1- Learn how you can break the problem down in recursive solution, how one can avoid taking repeated elements while considering them for the answer in the first place.
+
+# Date - 17/07/24
+# Time - 20 mins
