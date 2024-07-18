@@ -1,0 +1,90 @@
+# Problem (link):- https://leetcode.com/problems/word-search/
+
+# Notes-
+# 1- This is the question in which you just have to think recursively, since backtracking is very easy to think of in recursion. And since its a word search in a grid problem where you
+#  have to explore all the scenarios it is very clear that you will have to use backtracking only.
+# 2- Try to think of the case where you directly can avoid taking repeated elements in the first place, using set is a smart way
+# Try coming up with an iterative solution instead of recursive, Iterative > Recursive 
+
+# Solution 1: # TC - O(n*m*4^n) where n is the length of the word provided to us - this is because first we have two loops looking to match a word in the grid with the first letter in the word so we look through all the words in the grid making it m*n and then once we do find a match for the first word we recursively try to explore the words that are to the current word's adjacent in horizontal or vertical direction and if we find a match then we repeat this recursive process or we go back to finding another word in the grid that matches the first word of word. (As you can notice it is very similar to teh way we actually look for words in a grid by ourselves(VERY INTUITIVE))
+# SC - O(n) where n is length of the word string - since that will be the height of the recursive call stack.
+
+class Solution:
+    def exist(self, board: List[List[str]], word: str) -> bool:
+        def wordchecker(i, j, k):
+            if k >= length:
+                return True
+            if (i < 0 or j < 0 or i >= board_height or j >= board_width or board[i][j] != word[k] or (i, j) in repeating):
+                return False
+
+            if board[i][j] == word[k]:
+                repeating.add((i,j))
+                res = (wordchecker(i-1, j, k+1) or wordchecker(i, j+1, k+1) or wordchecker(i+1, j, k+1) or wordchecker(i, j-1, k+1))
+                repeating.remove((i,j))
+                return res
+            
+        board_height = len(board)
+        board_width = len(board[0])
+        length = len(word)
+        repeating = set()
+        for l in range(board_height):
+            for m in range(board_width):
+                if board[l][m] == word[0]:
+                    if wordchecker(l, m, 0):
+                        return True
+        return False
+    
+# Solution 2:
+    class Solution:
+    def exist(self, board: List[List[str]], word: str) -> bool:
+        m = len(board)
+        n = len(board[0])
+        if len(word) > m*n: 
+            return False
+
+        counter = defaultdict(int)
+        for i in range(m):
+            for j in range(n):
+                counter[board[i][j]] += 1
+
+        if counter[word[0]] > counter[word[-1]]: 
+            word = word[::-1]
+        for char in word:
+            if counter[char] == 0: 
+                return False
+            counter[char] -= 1
+
+        def backtracking(i, j, k):
+            res = False
+            if 0 <= i < len(board) and 0 <= j < len(board[0]) and k < len(word) and board[i][j] == word[k]:
+                if k == len(word) - 1:
+                    return True
+
+                temp = board[i][j]
+                board[i][j] = ""
+                res = backtracking(i + 1, j, k + 1) or \
+                    backtracking(i - 1, j, k + 1) or \
+                    backtracking(i, j + 1, k + 1) or \
+                    backtracking(i, j - 1, k + 1)
+                board[i][j] = temp
+            return res
+
+        for i in range(len(board)):
+            for j in range(len(board[0])):
+                if backtracking(i, j, 0):
+                    return True
+
+        return False
+    
+# Solution Methods:-
+    # 1- explained above with the Time Coplexity.
+
+# Thoughts on the Problem and Challenges:-
+    # 1- dont worry about the solution having exponential time complexity, it'll always have such a time complexity when you are trying to explore the entire solution space using brute
+    #  force approach, THERE IS NO BETTER WAY!
+
+# Learnings for a beginner in this problem:-
+    # 1- Learn how you can break the problem down in recursive solution, how one can avoid taking repeated elements while considering them for the answer in the first place.
+
+# Date - 17/07/24
+# Time - 10 mins
