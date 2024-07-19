@@ -1,0 +1,69 @@
+# Problem (link):- https://leetcode.com/problems/implement-trie-prefix-tree/
+
+# Notes-
+# 1- This is a data structure that is not common so the best way to go about it is to first learn about the data structure in the first place from somewhere else and then try to solve
+#  this problem, it should not be difficult since this is the basic fundamental implementation of the data structure itself. Also make sure you understand how the trie is being
+#  represened in a dictionary, according to me it is very important that you understand and are able to visualiza that, because that is the key to this entire data structure in my
+#  opinion.
+
+# Solution 1: # TC - O(n) - since in each of the functions we are traversing the word letter by letter and so at the end of the day the loop in the worst case scenario will always run for the amount of letters there are in the word so for n times.
+# SC - O(n) - since in the dictionary when we run the function insert we will store each of the letter in the word into the dictionary so it'll take at the end n characters space.
+class TrieNode:
+    def __init__(self, val):
+        self.val = val
+        self.child = {}
+        self.counter = 0
+
+class Trie:
+
+    def __init__(self):
+        self.root = TrieNode("-")
+
+    def insert(self, word: str) -> None:
+        node = self.root
+        for letter in word:
+            if letter in node.child:
+                node = node.child[letter]
+            else:
+                node.child[letter] = TrieNode(letter)
+                node = node.child[letter]
+        node.counter += 1
+        
+    def search(self, word: str) -> bool:
+        node = self.root
+        for letter in word:
+            if letter in node.child:
+                node = node.child[letter]
+            else:
+                return False
+        return node.counter > 0
+
+    def startsWith(self, prefix: str) -> bool:
+        node = self.root
+        for letter in prefix:
+            if letter in node.child:
+                node = node.child[letter]
+            else:
+                return False
+        return True
+
+# Solution Methods:-
+    # 1- in this code we are not doing anything else but creating a node in the dictionary and 
+    # then for insert we are saying:
+    #    i- if the root node in the ductionry doesnt have the letters of the word provided to be added in the child of each node then we will create a new child node and put these
+    #    letters as values in those child nodes and if it does exist(and is exactly same) then we will increment the counter of that child node in the dictionary by 1 
+    # then for search we are saying:
+        # ii- the same as insert but just it'll return true if it reached the child node after having gone through all the letters in the word provided and that child node has a
+        # counter > 0
+    # then for prefix we are saying:
+        # iii- the same as search but only for the amount of letters provided in the prefix and if all exist in the dictionary then we return true or else we return false.
+    
+# Thoughts on the Problem and Challenges:-
+    # 1- None
+
+# Learnings for a beginner in this problem:-
+    # 1- What is a Trie
+    # 2- How is it represented in the dictionary format
+
+# Date - 19/07/24
+# Time - 20 mins
