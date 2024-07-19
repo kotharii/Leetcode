@@ -1,0 +1,64 @@
+# Problem (link):- https://leetcode.com/problems/design-add-and-search-words-data-structure/
+
+# WILL DO THIS LATER, TIRED RIGHT NOW , THIS WAS DIFFICULT TO CODE THAN TO SOLVE
+# Notes-
+# 1- This is the question in which you just have to think recursively, since backtracking is very easy to think of in recursion. And since its a word search in a grid problem where you
+#  have to explore all the scenarios it is very clear that you will have to use backtracking only.
+# 2- Try to think of the case where you directly can avoid taking repeated elements in the first place, using set is a smart way
+# Try coming up with an iterative solution instead of recursive, Iterative > Recursive 
+
+# Solution 1: # TC - O(26^n) - worst case scenario you have to traverse through all the branches before reaching the branch which stops exactly at the word limit you have passed of the word and others have to be a node more or a letter more at the end.
+# SC - O(n) - since the call stack at any branch will have a maximum of n calls in it.
+class WordDictionary:
+
+    def __init__(self):
+        self.worder = {}
+
+    def addWord(self, word: str) -> None:
+        cur = self.worder
+        for letter in word:
+            if letter not in cur:
+                cur[letter] = {}
+            cur = cur[letter]
+        cur['*'] = ''
+
+    def search(self, word: str) -> bool:
+        print(f"Searching for word: {word}")
+        
+        def helper(cur, word):
+            print(f"Helper called with cur: {cur} and word: {word}")
+            for i in range(len(word)):
+                print(f"Checking character: {word[i]} at index: {i}")
+                if word[i] == '.':
+                    print("Wildcard found, checking all children nodes")
+                    for child in cur:
+                        if child != '*' and helper(cur[child], word[i + 1:]):
+                            print(f"Wildcard match found with child: {child}")
+                            return True
+                    print("Wildcard match not found")
+                    return False
+                elif word[i] in cur:
+                    cur = cur[word[i]]
+                    print(f"Character match found, moving to next node: {cur}")
+                else:
+                    print("char not found")
+                    return False
+            print("last")
+            return '*' in cur
+
+        result = helper(self.worder, word)
+        print("result", result)
+        return result
+
+# Solution Methods:-
+    # 1- explained above with the Time Coplexity.
+
+# Thoughts on the Problem and Challenges:-
+    # 1- dont worry about the solution having exponential time complexity, it'll always have such a time complexity when you are trying to explore the entire solution space using brute
+    #  force approach, THERE IS NO BETTER WAY!
+
+# Learnings for a beginner in this problem:-
+    # 1- Learn how you can break the problem down in recursive solution, how one can avoid taking repeated elements while considering them for the answer in the first place.
+
+# Date - 17/07/24
+# Time - 10 mins
