@@ -2,10 +2,9 @@
 
 # WILL DO THIS LATER, TIRED RIGHT NOW , THIS WAS DIFFICULT TO CODE THAN TO SOLVE
 # Notes-
-# 1- This is the question in which you just have to think recursively, since backtracking is very easy to think of in recursion. And since its a word search in a grid problem where you
-#  have to explore all the scenarios it is very clear that you will have to use backtracking only.
-# 2- Try to think of the case where you directly can avoid taking repeated elements in the first place, using set is a smart way
-# Try coming up with an iterative solution instead of recursive, Iterative > Recursive 
+# 1- This is the question where you might question your solution because of the time complexity it would take, but its right, theres no other better way. Only to code out the search
+#  part is a bit too difficult, but it can be overcome if worked on tries multiple times.
+# 2- Try to implement the search function within a short time span, the quicker you can the better your understanding will be.
 
 # Solution 1: # TC - O(26^n) - worst case scenario you have to traverse through all the branches before reaching the branch which stops exactly at the word limit you have passed of the word and others have to be a node more or a letter more at the end.
 # SC - O(n) - since the call stack at any branch will have a maximum of n calls in it.
@@ -51,14 +50,64 @@ class WordDictionary:
         return result
 
 # Solution Methods:-
-    # 1- explained above with the Time Coplexity.
+    # 1- In this solution the add word is pretty simple, the search is complx where we first check if the current letter being considered from the word is a dot or not, and if not
+    #  then its simpl to either move onto the next letter if current letter already exists and if current letter itself doesnt exist then quit right here. While if it is a dot then we
+    #  will have to run a for loop and go through all the posible children of the previous letter in the word in order to be able to find the rest of the letters that might match with
+    #  the letters in the word seaarch given. as soon as we do this for loop then its pretty simple that we again go the same interative way.
 
 # Thoughts on the Problem and Challenges:-
     # 1- dont worry about the solution having exponential time complexity, it'll always have such a time complexity when you are trying to explore the entire solution space using brute
     #  force approach, THERE IS NO BETTER WAY!
 
 # Learnings for a beginner in this problem:-
-    # 1- Learn how you can break the problem down in recursive solution, how one can avoid taking repeated elements while considering them for the answer in the first place.
+    # 1- Learn how you can break the problem down in recursive solution, try to get all the edge cases by thinking rather than running the code multiple times like i did.
 
-# Date - 17/07/24
-# Time - 10 mins
+# Date - 18/07/24
+# Time - 1hr
+
+
+
+# TRIED THE SECOND TIME  -- STILL TOUGH TO CODE MAN:-
+    
+# Writing for the second time, couldn't complete the code even under an hour of time, always missing some or the other edge case, search has to be implemented more carefully.
+# AM NOT ABLE TO GET ALL THE EDGE CASES DIRECTLY EVEN ONCE- finding this VERY DIFFICULT 
+
+class WordDictionary:
+
+    def __init__(self):
+        self.root = {'-': {}}
+
+    def addWord(self, word: str) -> None:
+        current_node = self.root['-']
+        for letter in word:
+            if letter not in current_node:
+                current_node[letter] = {}
+                current_node[letter]['counter'] = 0
+            current_node = current_node[letter]
+        current_node['counter'] = 1
+
+    def search(self, word: str) -> bool:
+        
+        def helper(current_node, new_word):
+            for i in range(len(new_word)):
+                if new_word[i] == '.':
+                    for alphabet in current_node:
+                        if alphabet == 'counter':
+                            continue
+                        else:
+                            if (i+1) != len(new_word) and helper(current_node[alphabet], new_word[i+1:]):
+                                return True
+                            elif (i+1) == len(new_word) and current_node[alphabet]['counter']:
+                                return True
+                    return False
+                if new_word[i] in current_node:
+                    if (i+1) != len(new_word):
+                        return helper(current_node[new_word[i]], new_word[i+1:])
+                    elif (i+1) == len(new_word):
+                        return current_node[new_word[i]]['counter']
+                if new_word[i] not in current_node:
+                    return False
+        return helper(self.root['-'], word)
+
+# Date - 24/07/24
+# Time - 1hr
