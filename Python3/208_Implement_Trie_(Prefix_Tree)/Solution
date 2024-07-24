@@ -67,3 +67,42 @@ class Trie:
 
 # Date - 19/07/24
 # Time - 20 mins
+    
+
+
+
+
+# ONLY FOR YOU SECTION:-
+# VERY DISSAPOINTING SECOND ATTEMPT, WAS NOT ABLE TO CREATE A NODE (GOT CONFUSED B/W A NODE,CHILD and DICTIONARY) 👎🏻, main thing was figuring that i will have to change the pointer to
+#  the child node of '-' everytime i call any definition be it insert, search or startswith without that i was clueless!! VERY BADDD!! Although having seen how to create a node was 
+# able to complete code in 14 mins.
+# class Trie:
+#     def __init__(self):
+#         self.root = {'-': {}}
+
+#     def insert(self, word: str):
+#         head_node = self.root['-']
+#         for letter in word:
+#             if letter not in head_node:
+#                 head_node[letter] = {}
+#                 head_node[letter]['counter'] = 0
+#             head_node = head_node[letter]
+#         head_node['counter'] = 1
+            
+#     def search(self, word: str) -> bool:
+#         head_node = self.root['-']
+#         for letter in word:
+#             if letter not in head_node:
+#                 return False
+#             head_node = head_node[letter]
+#         if head_node['counter'] == 1:
+#             return True
+#         else:
+#             return False
+#     def startsWith(self, prefix: str) -> bool:
+#         head_node = self.root['-']
+#         for letter in prefix:
+#             if letter not in head_node:
+#                 return False
+#             head_node = head_node[letter]
+#         return True
