@@ -1,0 +1,20 @@
+# Notes- Remember whenever you have to find the sum/difference within a range of a list or any similar data structure especially multiple
+#  times, it'll always be using Prefix sum/difference, cause making a prefix sum/difference makes it an O(1) operation to find the sum
+#  since then the sum is just the subtraction of two numbers and the subtraction is just the addition of 2 numbers.
+
+class NumArray:
+    def __init__(self, nums: List[int]):
+        for i in range(1, len(nums)):
+            nums[i] = nums[i-1] + nums[i]
+        self.nums = nums
+
+    def sumRange(self, left: int, right: int) -> int:
+        if left == 0:
+            return self.nums[right]
+        else:
+            return self.nums[right] - self.nums[left-1]
+        return result
+
+# Your NumArray object will be instantiated and called as such:
+# obj = NumArray(nums)
+# param_1 = obj.sumRange(left,right)
