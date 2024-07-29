@@ -1,3 +1,8 @@
+# Notes- Remember whenever you have to find the sum/difference within a range of a list or any similar data structure especially multiple
+#  times, it'll always be using Prefix sum/difference, cause making a prefix sum/difference makes it an O(1) operation to find the sum
+#  since then the sum is just the subtraction of two numbers and the subtraction is just the addition of 2 numbers.
+
+
 class Solution:
     def pivotIndex(self, nums: List[int]) -> int:
         n = len(nums)
