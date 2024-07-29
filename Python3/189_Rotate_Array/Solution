@@ -1,0 +1,26 @@
+# Notes - This is a very unique approach that is very difficult to strike, but as you notice if  take an array for example this 
+# "[1,5,3,6,2]" and reverse it "[2,6,3,5,1]" and then reverse both the parts individually from the point the number of times 
+# rotation(in this example case let it be 3) is done then it becomes first half rotation:- "[3,6,2,5,1]", 
+# second half rotation:- "[3,6,2,1,5]"
+
+
+
+class Solution:
+    def rotate(self, nums: List[int], k: int) -> None:
+        def reverse(A, start, end):
+            while start < end:
+                A[start], A[end] = A[end], A[start]
+                start += 1
+                end -= 1
+            return A
+
+        n = len(nums)
+        times = k % n
+        if times == 0:
+            return nums
+        else:
+            nums = reverse(nums, 0, n-1)
+            nums = reverse(nums, 0, (times-1))
+            nums = reverse(nums, times, (n-1))
+            return nums
+        
