@@ -1,0 +1,11 @@
+# Notes- once you know that binary representation is nothing but divided by 2^x where x is the position of the bit. It is fairly easy
+#  to get the solution
+# TC- O(log n) but n is pseudo polynomial.
+class Solution:
+    def hammingWeight(self, n: int) -> int:
+        count = 0
+        while n >= 1:
+            if n % 2 == 1:
+                count += 1
+            n = n // 2
+        return count
