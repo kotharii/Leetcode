@@ -1,0 +1,37 @@
+# Notes- this is a very tricky one, the solution i am explaining over here.
+# So What I have done is basically, once you observe that any element you remove from the array the array changes right, but you have to notice that only the numbers
+#  that are after this current number that you remove get their index changed obviously, and so what is a better and faster way to calculate the sums in an array
+#  again and again a prefix sum. So the logic is, once you remove an element, you know that all indices after that number are going to change from odd to even and
+#  vice versa, so what I did was, when i am at a element that is supposed to be removed, i remove the total sum from the prefix sum array until that number because
+#  i know that the even total/odd total will contain all the total sum till now which should be removed cause the elements previous odd and even are going to remain
+#  the same but the odd and even after this elements are going to change. So the mthod i exactly used was to take the sum of after the removal element and subtract
+#  the total sum till this element so i get the total of all the even/odd indices after teh element and then add it to the previous odd/even sum before the element.
+# Example for the above explanation:-
+# in the array [2,1,6,4] when i remove 1, the indices of all numbers after 1 change from odd to even and even to odd, so i take the sum of all even indices after the
+#  element subtract sum of all numbers before the element --> THUS giving me the sum of all the elements which are even after the element and since these even sum
+#  are going to now be at odd indices after the removal of the element i remember this even right sum and add it to the odd left sum before the element so until the
+#  element was encountered we has the sum of the numbers till this element that was odd and now we get the sum of all the elements that are NOW going to be odd so
+#  just add them together and i get the odd sum, similarly i do this for the even sum and then compare then.
+
+# TC - O(n) SC - O(n)
+class Solution:
+    def waysToMakeFair(self, nums: List[int]) -> int:
+        n= len(nums)
+        eps = [0] * (n+1)
+        ops = [0] * (n+1)
+        for i in range(n):
+            if i%2 == 0:
+                eps[i+1] = eps[i] + nums[i]
+                ops[i+1] = ops[i]
+            else:
+                ops[i+1] = ops[i] + nums[i]
+                eps[i+1] = eps[i]
+        count = 0
+        for i in range(1, n+1):
+            # odd_left = ops[i-1]
+            # even_left = eps[i-1]
+            odd_total = (eps[-1] - eps[i]) + ops[i-1]
+            even_total = (ops[-1] - ops[i]) + eps[i-1]
+            if odd_total == even_total:
+                count += 1
+        return count
