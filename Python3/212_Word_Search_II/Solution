@@ -1,0 +1,184 @@
+# Notes- How is this code done:-
+# First we add all teh words in the words list into a trie and then we simultaneously check for each letter in the board if for that letter there is a root's child
+#  corresponding to it and if there then then we explore the board in horizontal and vertial manner while checking if there is a child node in the trie for each of
+#  those letters and if there is one then we continue the recursive function till we reach the end of a word in the trie and add that word to a set, we also
+#  simultaneously maintain a visit set in order to make sure that when trying to explore a path we are not visiting the same letter on the board once again while
+#  that one word search is only going on.
+
+# TC - O() - let k be the length of the word list then the for loop that goes through all the words in order to pass each word to make a trie will itself become a O(k)
+#  operation(which is given to be 3* 10^4) + goign through each letter of each word where given that each letter inside a word can be of max 10 therefore this would
+#  become 3*10^4 * 10 operation but still O(k) since its 10k only + Since it is a nested loop it will obviously be m*n but then recursion is called and it is called 4 
+# times within each recursive function call itself so that means to calculate the depth of the recursion call one should calculate that for each cell teh recursion
+#  function in the worst case can be kept on called until the entire board is traversed(OR MORE ACCURATELY UNTIL THE ENTIRE WORD's LETTERS ARE TRAVERSED) and so the
+#  time complexity will be O(mn * 4^(mn)) And since the O(k) was there at first so will it become O(k+mn * 4^(mn)), since we are given that the legth of the word can
+#  be at max 10, calling 10 = b we can write the TC as O(k.b) + O(mn * 4^b) and so finally it is O(k+mn) as 4^b is considered constance.
+# SC - O() -  let k be the length of the word list then the result set in the worst case scenario since all words are unique will contain all of the words, so it can
+# be O(k) space + worst case visit set can contain all the characters of the board having been visited and all are unique so it can be O(mn) space usage.
+class TrieNode:
+    def __init__(self):
+        self.child = {}
+        self.isWord = False
+
+    def addWord(self, word):
+        current = self
+        for letter in word:
+            if letter not in current.child:
+                current.child[letter] = TrieNode()
+            current = current.child[letter]
+        current.isWord = True
+
+class Solution:
+    def findWords(self, board: List[List[str]], words: List[str]) -> List[str]:
+        current = TrieNode()
+        for word in words:
+            current.addWord(word)
+        
+        res = set()
+        visit = set()
+        def recursion(i, j, node, word):
+            if (i == -1 or j == -1 or i == m or j == n or board[i][j] not in node.child 
+            or (i,j) in visit):
+                return
+            
+            visit.add((i,j))
+            node = node.child[board[i][j]]
+            word += board[i][j]
+
+            if node.isWord:
+                res.add(word)
+
+            recursion(i+1, j, node, word)
+            recursion(i, j-1, node, word)
+            recursion(i-1, j, node, word)
+            recursion(i, j+1, node, word)
+            visit.remove((i,j))
+
+        m = len(board)
+        n = len(board[0])
+        for y in range(m):
+            for z in range(n):
+                recursion(y, z, current, "")
+        return list(res)
+
+# BEST SOLUTION FOR THIS AND GOD DAMNNN ITSSS SOO GOOD, PLEASE DO UNDERSTAND THIS, ITS ABSOLUTE A GENIUS MASTERSTROKE MAN:-
+# Notes- Explanation for the code below, it moresoover does the same thing as us but a few differences that just shows the ingenuity of this person who wrote this, DAMNNN!
+    # Explanation - at the end of the code
+class TrieNode:
+    def __init__(self):
+        self.children = dict()
+        self.end_of_word = False
+        self.word = None
+
+class Solution:
+    def __init__(self):
+        self.root = TrieNode()
+        # Using self.DIRS uses 2mb more memory
+        # self.DIRS = ((1, 0), (0, 1), (-1, 0), (0, -1))
+
+    def build_trie(self, board, words, max_len):
+        board_counter = Counter()
+        for row in range(len(board)):
+            for col in range(len(board[0])):
+                board_counter[board[row][col]] += 1
+
+        for idx in range(len(words)):
+            word = words[idx]
+
+            # if len(word) > max_len:
+            #     continue
+
+            word_counter = Counter(word)
+            # for char in word_counter:
+            #     if (
+            #         char not in board_counter
+            #         or board_counter[char] < word_counter[char]
+            #     ):
+            #         continue
+
+            is_reversed = False
+            if board_counter[word[-1]] < board_counter[word[0]]:
+                word = word[::-1]
+                is_reversed = True
+
+            curr_node = self.root
+            for char in word:
+                if char not in curr_node.children:
+                    curr_node.children[char] = TrieNode()
+                curr_node = curr_node.children[char]
+            curr_node.end_of_word = True
+
+            if is_reversed:
+                curr_node.word = word[::-1]
+            else:
+                curr_node.word = word
+
+    def findWords(self, board: List[List[str]], words: List[str]) -> List[str]:
+        res = []
+        ROWS, COLS = range(len(board)), range(len(board[0]))
+        DIRS = ((1, 0), (0, 1), (-1, 0), (0, -1))
+        self.build_trie(board, words, len(board) * len(board[0]))
+
+        def backtrack(parent_node, row, col):
+            # board[row][col] is in parent_node.children
+            curr_char = board[row][col]
+            curr_node = parent_node.children[curr_char]
+
+            if curr_node.end_of_word:
+                res.append(curr_node.word)
+                curr_node.end_of_word = False
+
+            # Mark as visited
+            board[row][col] = "."
+
+            for row_change, col_change in DIRS:
+                new_row, new_col = row + row_change, col + col_change
+                in_bounds = (new_row in ROWS) and (new_col in COLS)
+                if in_bounds and (board[new_row][new_col] in curr_node.children):
+                    backtrack(curr_node, new_row, new_col)
+
+            # Backtrack
+            board[row][col] = curr_char
+
+            if not curr_node.children:
+                del parent_node.children[curr_char]
+
+        for row in ROWS:
+            for col in COLS:
+                curr_char = board[row][col]
+                if curr_char in self.root.children:
+                    backtrack(self.root, row, col)
+
+        return res
+    
+# EXPLANATION:-
+    '''
+1.	Trie Optimization:
+	•	Trie Construction: The trie structure allows for efficient prefix searching. Building the trie and reversing the word based on character frequency optimizes search time.
+	•	Word Reversal: Reversing the word based on character frequency reduces the search space by ensuring the more frequent character comes first, leading to faster lookups.
+	2.	Backtracking with Pruning:
+	•	Marking Visited Cells: Using in-place marking (board[row][col] = ".") is more efficient than maintaining a separate visited set.
+	•	Pruning: Deleting nodes that have no children helps in reducing unnecessary searches and memory usage.
+	3.	Memory Efficient Moves:
+	•	Directional Moves: Using a fixed set of directions (DIRS) reduces the overhead of multiple function calls and simplifies boundary checks.
+
+
+
+    Why does creating a trie with the character that is less number of times occurring on the board more better way? Ohh is it because that if for example the first
+      word was o for the word oath and o occurred 5 times on the board then in the worst case scenario the entire function would run 4 times with 4 other o's of the
+        board that did not have their adjacent as the word we were looking for but instead h has occured only once on the board then we go into the function only
+          once when the nested loop come onto the letter h and go to find the adjacent letters of the word making it a one time function entering instead of multiple
+            times, if this explanation of mine is right say 1- right or say 1- wrong. Now for the second one named as backtracking with pruning the only thing I
+              understood over here is that in my code when I try to go for each of the 4 cases trying to get where I can become -1 and I can become equal to the
+                length of board, instead in this code they calculated this in the function and only if it was within the limits then only called the function
+                  again(recursively) otherwise terminated that recursive call immediately also by using the inlace modification to . Instead of accessing a set
+                    outside the function and trying to check would be a faster approach, if my explanation for 2 is right say 2-right otherwise say 2-wrong and for
+                      the last 3rd one , I covered this in 2 itself. If I missed something explanation do state it and explain it like this the way I have done
+
+                      Lastly one last masterstroke:-
+                      When you say "Pruning:
+Pruning is done after exploring all possible directions from a given cell. If a Trie node has no children after the exploration, it is removed from its parent’s
+ children. This is done to reduce the size of the Trie and optimize memory usage." So you mean that if there was a word in the trie as oath where o was the root
+   node's child and a was o's and so on, then when the letter h was visited and the word oath was added to the result at that time the node h was removed because
+     of 1- since it had no children if someone had to come till here it would be for the word oath itself and since the constraints are given in the question that
+       each word is unique so this h would anyways be never visited again? Say yes if right or otherwise explain
+    '''
