@@ -117,30 +117,30 @@ class WordDictionary:
     
 class WordDictionary:
 
-def __init__(self):
-    self.root = {"-": {}}
+    def __init__(self):
+        self.root = {"-": {}}
 
-def addWord(self, word: str) -> None:
-    current = self.root["-"]
-    for letter in word:
-        if letter not in current:
-            current[letter] = {}
-        current = current[letter]
-    current['count'] = 1
+    def addWord(self, word: str) -> None:
+        current = self.root["-"]
+        for letter in word:
+            if letter not in current:
+                current[letter] = {}
+            current = current[letter]
+        current['count'] = 1
 
-def search(self, word: str) -> bool:
-    def helper(j, current):
-        for i in range(j, len(word)):
-            if word[i] == '.':
-                for options in current:
-                    if options != 'count' and helper(i+1, current[options]):
-                        return True
-            if word[i] in current:
-                current = current[word[i]]
-            else:
+    def search(self, word: str) -> bool:
+        def helper(j, current):
+            for i in range(j, len(word)):
+                if word[i] == '.':
+                    for options in current:
+                        if options != 'count' and helper(i+1, current[options]):
+                            return True
+                if word[i] in current:
+                    current = current[word[i]]
+                else:
+                    return False
+            if 'count' not in current:
                 return False
-        if 'count' not in current:
-            return False
-        else:
-            return True
-    return helper(0, self.root["-"])
+            else:
+                return True
+        return helper(0, self.root["-"])
