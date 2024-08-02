@@ -1,0 +1,81 @@
+from collections import Counter
+from typing import List
+
+class TrieNode:
+    def __init__(self):
+        self.children = dict()
+        self.end_of_word = False
+        self.word = None
+
+class Solution:
+    def __init__(self):
+        self.root = TrieNode()
+
+    def build_trie(self, board, words, max_len):
+        board_counter = Counter()
+        for row in range(len(board)):
+            for col in range(len(board[0])):
+                board_counter[board[row][col]] += 1
+
+        for idx in range(len(words)):
+            word = words[idx]
+
+            word_counter = Counter(word)
+
+            is_reversed = False
+            if board_counter[word[-1]] < board_counter[word[0]]:
+                word = word[::-1]
+                is_reversed = True
+
+            curr_node = self.root
+            for char in word:
+                if char not in curr_node.children:
+                    curr_node.children[char] = TrieNode()
+                curr_node = curr_node.children[char]
+            curr_node.end_of_word = True
+
+            if is_reversed:
+                curr_node.word = word[::-1]
+            else:
+                curr_node.word = word
+
+    def findWords(self, board: List[List[str]], words: List[str]) -> List[str]:
+        res = []
+        ROWS, COLS = range(len(board)), range(len(board[0]))
+        DIRS = ((1, 0), (0, 1), (-1, 0), (0, -1))
+        self.build_trie(board, words, len(board) * len(board[0]))
+
+        def backtrack(parent_node, row, col):
+            curr_char = board[row][col]
+            curr_node = parent_node.children[curr_char]
+
+            if curr_node.end_of_word:
+                res.append(curr_node.word)
+                curr_node.end_of_word = False
+
+            board[row][col] = "."
+
+            for row_change, col_change in DIRS:
+                new_row, new_col = row + row_change, col + col_change
+                in_bounds = (new_row in ROWS) and (new_col in COLS)
+                if in_bounds and (board[new_row][new_col] in curr_node.children):
+                    backtrack(curr_node, new_row, new_col)
+
+            board[row][col] = curr_char
+
+            if not curr_node.children:
+                del parent_node.children[curr_char]
+
+        for row in ROWS:
+            for col in COLS:
+                curr_char = board[row][col]
+                if curr_char in self.root.children:
+                    backtrack(self.root, row, col)
+
+        return res
+
+# Example usage:
+sol = Solution()
+board = [["o","a","a","n"],["e","t","a","e"],["i","h","k","r"],["i","f","l","v"]]
+words = ["oath","pea","eat","rain"]
+print(sol.findWords(board, words))  # Output: ["oath", "eat"]
