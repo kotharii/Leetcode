@@ -1,0 +1,92 @@
+# Problem (link):- https://leetcode.com/problems/number-of-islands/
+
+# Notes-
+# 1- The question is very clear and the only way you can think about is by traversing all the 1's in the grid in order to find out and what better way to do that 
+# than bfs or dfs.
+
+# Solution 1:
+# TC - O(m*n) - it is m*n only and not m^2*n^2 as you can notice that even when it looks like we are going over each cell twice, well we are but the operations on the
+#  cells are only done once, which is in the worst case scenario think that the entire grid has only 1's and so the bfs will only be called once and the entire bfs
+#  function will go over each cell in the grid making it a m*n operations but after bfs is over, it goes back to the nested loop which does nothing but carries a
+#  O(1) operation of checking whether the cell is visited or not and does not perform any other thing relating to that cell, so we are visitng each cell twice so to
+#  speak but we are only performing operations on them a total of 1 time(Either within the bfs or within the nested loop outside). 
+# Breakdown - the first outer loop goes through the rows so m operations and the inner nested loop goes n times so m*n operations, within the bfs the queue while
+#  loop will at most run for m*n operations (one for each cell in the grid) and the for loop of directions is constantly running for 4 loops each time the while loop
+#  runs. So overall time complexity is O(m*n)
+# SC - O(m*n) - it is m*n since in the visisted set as well as the queue it can at most store m*n (each cell's) information(index).
+class Solution:
+    from collections import deque 
+    def numIslands(self, grid: List[List[str]]) -> int:
+
+        def bfs(i ,j):
+            nonlocal rows
+            nonlocal cols
+            queue = collections.deque([(i,j)])
+            directions = [(1,0), (0,1), (-1,0), (0,-1)]
+            while queue:
+                i,j = queue.popleft()
+                for k in range(len(directions)):
+                    row,col = i+directions[k][0], j+directions[k][1]
+                    if row in range(rows) and col in range(cols) and (row, col) not in visited and grid[row][col] == "1":
+                        queue.append((row,col))
+                        visited.add((row,col))
+
+
+        rows = len(grid)
+        cols = len(grid[0])
+        count = 0
+        visited = set()
+        for i in range(rows):
+            for j in range(cols):
+                if grid[i][j] == "1" and (i,j) not in visited:
+                    bfs(i ,j)
+                    count += 1
+        return count
+
+
+# Solution 2:
+    # Same TC and SC as above but less operations since in TC we are not putting a conditional check on visited set every now and then and in SC we are not storing 
+    # cell's index's within the visited set. We are compensating for this by using in place manipulation by converting the already visited cell to 0 from 1.
+class Solution:
+    from collections import deque 
+    def numIslands(self, grid: List[List[str]]) -> int:
+
+        def bfs(i ,j):
+            nonlocal rows
+            nonlocal cols
+            queue = collections.deque([(i,j)])
+            directions = [(1,0), (0,1), (-1,0), (0,-1)]
+            while queue:
+                i,j = queue.popleft()
+                for k in range(len(directions)):
+                    row,col = i+directions[k][0], j+directions[k][1]
+                    if row in range(rows) and col in range(cols) and grid[row][col] == "1":
+                        queue.append((row,col))
+                grid[i][j] = "0"
+
+        rows = len(grid)
+        cols = len(grid[0])
+        count = 0
+        for i in range(rows):
+            for j in range(cols):
+                if grid[i][j] == "1":
+                    bfs(i ,j)
+                    count += 1
+        return count
+
+# Solution Methods:-
+    # 1- an approach where you are going througha all the cells in the grid in order to find the 1's whicha are connected to each other this can obviously be done by
+    #  bfs or dfs and once you do not find anymore connected land(1's) you go through the rest of the elements in the cell than the ones already traversed by the
+    #  bfs/dfs and so if you find a 1 again you repeat the same procedure and from the amount of times you ran bfs/dfs can clearly tell you the amount of islands
+    #  there are present.
+
+
+# Thoughts on the Problem and Challenges:-
+    # USAGE BFS/DFS - graph problem.
+
+# Learnings for a beginner in this problem:-
+    
+
+
+# Date - 09/08/24
+# Time - 40 mins
