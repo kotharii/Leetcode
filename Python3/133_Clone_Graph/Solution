@@ -1,0 +1,73 @@
+# Problem (link):- https://leetcode.com/problems/clone-graph/
+
+# Notes-
+# 1- As you read the solution it is a bit tricky to understand at first but what they need is a clone of the entire graph and each node pointing as is provided to 
+# you, just this should be overall the same structure with the same values in the same places.
+
+
+# Solution 1: # TC - O(V+E) -> this is obvious but i'll still explain - so as the while loop runs as long as there are elements within the queue and the queue will 
+    # at most have all the nodes once in it, therefore this while loop will run V times where V is the number of vertices in the graph, now there is a nested for loop
+    # within the while loop and the for loop runs for a total of e times but it runs e times either for one node (in the example where it is a complete graph - so in
+    # the first iteration itself where the first node is considered, the for loop will run for e times that is the number of edges the first node has and in this case
+    # since its a complete graph for n-1 times) or across all the nodes in the graph so "IT DOES NOT RUN E TIMES FOR EACH NODE BUT ONLY E TIMES ACROSS ALL N NODES",
+    # so we can say that the while loop will un V times and the for loop will run E times and so the overall time complexity will be O(V+E).
+# SC - O(V) --> since the queue, mapper and copy nodes creation for each existing node will all take V space.
+# Definition for a Node.
+class Node:
+    def __init__(self, val = 0):
+        self.val = val
+        self.neighbors = neighbors if neighbors is not None else []
+
+from typing import Optional
+class Solution:
+    def cloneGraph(self, node: Optional['Node']) -> Optional['Node']:
+        mapper = {}
+        def bfs(node):
+            queue = collections.deque([node])
+            mapper[node.val] = Node(node.val)
+            while queue:
+                current = queue.popleft()
+                for nei in current.neighbors:
+                    if nei.val not in mapper:
+                        mapper[nei.val] = Node(nei.val)
+                        queue.append(nei)
+                    mapper[current.val].neighbors.append(mapper[nei.val])
+            return mapper[node.val]
+        return bfs(node) if node else None
+
+# Solution 2: # TC - O(V+E) --> this is because as you can notice that the function is visiting each node at least once and throughout all of those nodes visits a total of e times (e being the number of edges(neighbours) all the nodes have in total (degree)/2) and so the time complexity comes out to be O(V) + O(E). 
+# SC - O(V) --> since the mapper and copy nodes creation for each existing node will all take V space.
+class Node:
+    def __init__(self, val = 0, neighbor = []):
+        self.val = val
+        self.neighbor = neighbor
+from typing import Optional
+class Solution:
+    def cloneGraph(self, node: Optional[Node]) -> Optional[Node]:
+        mapper = {}
+        def dfs(node):
+            mapper[node.val] = Node(node.val)
+            for nei in node.neighbors:
+                if nei.val not in mapper:
+                    mapper[node.val].neighbors.append(dfs(nei))
+                else:
+                    mapper[node.val].neighbors.append(mapper[nei.val])
+            return mapper[node.val]
+        return dfs(node) if node else None
+    
+
+# Solution Methods:-
+    # 1- This is an approach where a BFS traversal of the graph is taken in order to build a new clone graph, the explanation is given within the TC description above.
+    # 2- This is an approach where a DFS traversal of the graph is taken using recursion rather than a stack approach, the explanation is given within the TC 
+    # description above.
+
+
+# Thoughts on the Problem and Challenges:-
+    # how to utilize the recursive method in the most optimal way possible.
+
+# Learnings for a beginner in this problem:-
+    # 1- 
+
+
+# Date - 11/08/24
+# Time - 1 hr
