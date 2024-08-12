@@ -1,0 +1,74 @@
+# Problem (link):- https://leetcode.com/problems/clone-graph/
+
+# Notes-
+# 1- As you read the question it is a bit trciky to come up with it instantly unless done before. IMP --> Let me save you some major amount of time, if you are 
+# thinking of propogation of water flow access through teh cell it is not going to work as it is not that dynamic, in the end you will have to make multiple checks 
+# for each of the cell in order to get it correctly display the value that is to be expeceted. for eg: see the image in thsi file.
+
+
+# Solution 1: # Solution 1:
+# TC - O(m*n) --> the dfs recursive call stack can at most go till m*n where the worst case scenario is that each cell in the grid gets called in the recursion 
+# starting from the first cell itself and then they are not considered anymore since in all other calls the row and col index will already be present in the visited
+# set and within each recursive call the for loop will go a constant 4 number of times so it can at most get 4 * (m*n) times. then it will be O(m) + O(n) + O(m) + O(n)
+# and in the last when traversing the visited set it can at max go through each cell in the grid making that loops m*n times. so the overall time complexity
+# actually is O(m*n) + O(m) + O(n) + O(m) + O(n) + O(m*n) and thus it is finally O(m*n)
+# SC - O(m*n) --> contributed by the pacific set, atlantic set, dfs recursive call stack and result list they all in the worst case scenario get to O(m*n)
+class Solution:
+    def pacificAtlantic(self, heights: List[List[int]]) -> List[List[int]]:
+        pacific_visited, atlantic_visited = set(), set()
+        result = []
+        directions = [(1,0), (0,1), (-1,0), (0,-1)]
+        n = len(heights)
+        m = len(heights[0])
+
+        def dfs(i,j, visited):
+            visited.add((i,j))
+            for dr, dc in directions:
+                new_col, new_row = j + dc, i + dr
+                if new_col == m or new_row == n or new_col == -1 or new_row == -1 or heights[new_row][new_col] < heights[i][j] or (new_row, new_col) in visited:
+                    continue
+                dfs(new_row, new_col, visited)
+
+        i = 0
+        for j in range(m):
+            dfs(i,j, pacific_visited)
+        
+        l = 0
+        for k in range(1, n):
+            dfs(k,l, pacific_visited)
+        
+        j = m - 1
+        for i in range(n):
+            dfs(i,j, atlantic_visited)
+        
+        k = n - 1
+        for l in range(m-1):
+            dfs(k,l, atlantic_visited)
+
+        for pair in pacific_visited:
+            if pair in atlantic_visited:
+                result.append(list(pair))
+        
+        return result
+
+# Solution 2: you can do this through doing BFS too rather than DFS as i have done from the row and column adjacent to pacific and atlantic ocean.
+    
+
+# Solution Methods:-
+    # 1- This is an approach where a DFS traversal of the graph is taken in order to find the cells that are able to make the water flow from them to the pacific and
+    #  then to the atlantic and then taking their intersection as the one cells that can flow to both oceans.
+    # 2- This is an approach where a BFS traversal of the graph is taken in order to find the cells that are able to make the water flow from them to the pacific and
+    #  then to the atlantic and then taking their intersection as the one cells that can flow to both oceans.
+
+
+# Thoughts on the Problem and Challenges:-
+    # Recognize this pattern its a new unique patern where you have to traverse from the ocean towards the cell in order to find it, and in this you would be 
+    # visiting the cells only twice which would remove the 2 in the complexity calculation and only make it O(mn)
+
+# Learnings for a beginner in this problem:-
+    # 1- Unique pattern, smart way to work around rather than thinking it from the side of the cells as to finding which cell can make the water flow from there to
+    #  the ocean.
+
+
+# Date - 12/08/24
+# Time - 2 hr
