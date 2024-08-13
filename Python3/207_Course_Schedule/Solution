@@ -1,0 +1,65 @@
+# Problem (link):- https://leetcode.com/problems/course-schedule/
+
+# Notes-
+# 1- As you read the question you instantly know that there is a sequential process and topological sort will instantly strike you, no doubt about it. If you are
+#  thinking about applying kahn's algorithm then you are perfectly on the right trck no matter how you do it you will get to the reight solution the right way.
+#  Just revise kahn's solution if you havent before solving that will help you a lot.
+
+
+# Solution 1: # TC - O(m^2+n) whichever is greater --> the contributing factors: 1- O(m) the mapper running for numberofcourses times to create a node for each course, where m is equal to numberofcrouses provided 2- O(m) the indegree running for for numberofcourses times to put an indegree of 0 for each course, where m is equal to numberofcrouses provided 3- O(n) times For loop going through the entire prerequisites list where n is the number of edges 4- O(m) calculating the length of the mapper 5- O(m) for the for loop runs over each of the indexes for the numofcourses 6- O(m^2) cause the for loop runs through all the node's children which in the worst case scenario each node has all other nodes(n-1) as its children.
+# SC - O(n)/O(m) whichever is greater --> contributing factors:- 1- O(n) children list storing all the children node can be n-1 children node for each node. 2-O(m) mapper containing all the nodes for each of the numberofcourses 3- O(m) - indegree containing all the degrees for each of the numberofcourses 4- O(m) queue where all the node's children nodes can be present all at once since one node is connected to n-1 nodes.
+from collections import deque
+class Node:
+    def __init__(self, val = 0):
+        self.val = val
+        self.children = []
+
+class Solution:
+    def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
+        mapper = {i: Node(i) for i in range(numCourses)}
+        in_degree = {i: 0 for i in range(numCourses)}
+        
+        for after, before in prerequisites:
+            mapper[before].children.append(mapper[after])
+            in_degree[after] += 1
+
+        count = 0
+        queue = collections.deque([])
+        n = len(mapper)
+        for i in range(n):
+            if in_degree[i] == 0:
+                queue.append(i)
+                count += 1
+        while queue:
+            current = queue.popleft()
+            for child in mapper[current].children:
+                in_degree[child.val] -= 1
+                if in_degree[child.val] == 0:
+                    queue.append(child.val)
+                    count += 1
+        if count == n:
+            return True
+        else:
+            return False
+
+# Solution 2: I will solve it later, but i think the better approach is to solve it while keeping it in lists by making it an adjacency list insead of nodes,
+        #  because nodes is an extra creation that will take more time and space operations (not overall complexity) and thus will give you better and faster results,
+        #  so rather than creting nodes for everything try to create adjacency list and from those neighbours in these adjacency list try to extract the info you want
+        #  in order to solve the question.
+    
+
+# Solution Methods:-
+    # 1- This is an approach where i create a topological sort for each of the course and then just check if tehre exists a cycle within this graph and if it does
+    #  then its clear that tehre is no way you can take the courses since it forms a cycle but if it doesnt then you know there is a sequaltial order in which
+    #  if you take courses you will be able to complete all the courses.
+
+
+# Thoughts on the Problem and Challenges:-
+    # Learnt to write clearner code
+
+# Learnings for a beginner in this problem:-
+    # 1- 
+
+
+# Date - 12/08/24
+# Time - 1 hr
