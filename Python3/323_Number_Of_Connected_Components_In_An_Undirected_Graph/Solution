@@ -1,0 +1,123 @@
+# Problem (link):- https://www.lintcode.com/problem/3651/
+# https://leetcode.com/problems/number-of-connected-components-in-an-undirected-graph/description/
+# Notes-
+# 1- This is a lil bit difficult sum if you cannot think of the future implications/o future order of edges that can be encountered from the beginning.
+
+
+# My First attempt at solving the problem and the reason why it is wrong or doesn't work.
+# As you can understand by the code below i am trying to connect the components by the edges as they are being encountered, so it does work for cases that provide the edges
+#  within the edges array in a manner where after one edge for exmaple [0,1] the next edge is connected or entirely disconnected for example if the next edges are [1,2] then
+#  since 1 is already visited i consider 2 node also a component of the same graph, but the condition where I fail is if the next edge given after [0,1] is [2,3] and then the
+#  next edge is [1,2] then by the time my code comes till 1,2 and 2,3 it automaticlly considers the components as 2 in number and doesn't consider the poissbility of it
+#  combining into one component later on.
+
+from typing import (
+    List,
+)
+
+class Solution:
+    def count_components(self, n: int, edges: List[List[int]]) -> int:
+        count = 0
+        visited = {}
+        for nodea, nodeb in edges:
+            if nodea not in visited and nodeb not in visited:
+                count += 1
+                visited[nodea] = [nodeb]
+                visited[nodeb] = [nodea]
+            elif nodea not in visited:
+                visited[nodea] = [nodeb]
+                visited[nodeb].append(nodea)
+            else:    
+                visited[nodeb] = [nodea]
+                visited[nodea].append(nodeb)
+        visit_nodes = len(visited)
+        if visit_nodes < n:
+            count += (n-visit_nodes)
+        return count
+
+# Solution 1 :-
+# TC - O(n+m) SC - O(n) -- where n is the number of nodes present in the graph and m are the number of nodes appearing in the edges array which at most can be 2n
+from typing import (
+    List,
+)
+class Solution:
+    def count_components(self, n: int, edges: List[List[int]]) -> int:
+        noc = n
+        par = [i for i in range(n)]
+        rank = [1] * n
+
+        def find(n1):
+            res = n1
+
+            while res != par[res]:
+                par[res] = par[par[res]]
+                res = par[res]
+            return res
+        
+        def union(n1,n2):
+            p1, p2 = find(n1), find(n2)
+
+            if p1 == p2:
+                return 0
+            if rank[p2] > rank[p1]:
+                par[p1] = p2
+                rank[p2] += rank[p1]
+                return 1
+            else:
+                par[p2] = p1
+                rank[p1] += rank[p2]
+                return 1
+        for n1,n2 in edges:
+            noc -= union(n1,n2)
+        return noc
+
+#Solution 2:-
+# TC - O(n+m+(constant)(n+m)) or O(n+m+n(constant)) - where n is the number of nodes and m is the number of edges, the two cases are one where there are all nodes conected and
+#  counted as one component itself and another case is when there are n nodes and all of them are independent(none are connected)
+# SC - O(n+m) --> where n+m comes from the list dictionary since it stores both the nodes from which there are edges to others nodes and both nodes store each other so a node
+#  stores all the nodes that it has an edge to.
+from typing import (
+    List,
+)
+class Solution:
+    def count_components(self, n: int, edges: List[List[int]]) -> int:
+        visited = {}
+        listt = {i: [] for i in range(n)}
+        for n1,n2 in edges:
+            listt[n1].append(n2)
+            listt[n2].append(n1)
+
+        def dfs(node):
+            visited[node] = 1
+            stack = [node]
+            while stack:
+                current = stack.pop()
+                for neighbor in listt[current]:
+                    if neighbor not in visited:
+                        stack.append(neighbor)
+                        visited[neighbor] = 1
+
+
+        count = 0
+        for i in range(n):
+            if i not in visited:
+                dfs(i)
+                count += 1
+        return count
+    
+# Solution Methods:-
+    # 1- created a Union Find algorithm where one can find the parent of any node(initially set to themselves) and then if the parent of two nodes is the same then just merge a
+    #  node using the union logic and as I merge decrement the number of components since initially we keep the number of components present as the number of nodes present,
+    #  just an extra optimization is that we add a node to another node based on their ranks so for example 0 has 4 child nodes and 2 has 0 child nodes and now its time to 
+    # merge 2 with one of the cild nodes of 0 then we will merge 2 into 0's child nodes and not that chld node as 2's child node just becasue the parent of 0's child 
+    # node (0 itself) has a greater rank than 2.
+    
+# Thoughts on the Problem and Challenges:-
+    # the moment you see number of compoenents problem you should think of union and find algorithm cause this is the algorithm that is key and intuitive and easiest to find
+    #  the number of "DISCONNECTED" or "CONNECTED" componenets in most of the graph cases.
+
+# Learnings for a beginner in this problem:-
+    # 1- Learn how to implement the Union and Find Functionality.
+
+# Date - 24/09/24
+# Time - 1 hr
