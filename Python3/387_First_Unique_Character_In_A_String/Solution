@@ -1,0 +1,24 @@
+# Solution 1 - TC - O(n), SC-O(n)
+from collections import Counter
+
+class Solution:
+    def firstUniqChar(self, s: str) -> int:
+        count = Counter(s)
+        for i, char in enumerate(s):
+            if count[char] == 1:
+                return i
+        return -1
+    
+# Solution 2 - TC - O(n), SC - O(n)
+class Solution:
+    def firstUniqChar(self, s: str) -> int:
+        dicter = {}
+        for i in range(len(s)):
+            if s[i] in dicter:
+                dicter[s[i]]["count"] += 1
+            else:
+                dicter[s[i]] = {"index": i,"count": 1}
+        for letter,value in dicter.items():
+            if value["count"] == 1:
+                return value["index"]
+        return -1

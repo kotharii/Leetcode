@@ -2,7 +2,7 @@
 #  times, it'll always be using Prefix sum/difference, cause making a prefix sum/difference makes it an O(1) operation to find the sum
 #  since then the sum is just the subtraction of two numbers and the subtraction is just the addition of 2 numbers.
 
-
+# Solution 1:
 class Solution:
     def pivotIndex(self, nums: List[int]) -> int:
         n = len(nums)
@@ -20,3 +20,17 @@ class Solution:
             if left == right:
                 return i
         return -1
+    
+# Solution 2: --> over here like solution 1, you dont have to keep left = 0 as a special edge case condition to be consdiered.
+class Solution:
+    def pivotIndex(self, nums: List[int]) -> int:
+        right = sum(nums)
+        left = 0
+        for i in range(len(nums)):
+            right -= nums[i]
+            if right == left:
+                return i
+            left += nums[i]
+        return -1
+    
+# Solution 3:
