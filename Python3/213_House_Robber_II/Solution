@@ -1,0 +1,39 @@
+# Solution 1: TC - O(n), SC- O(n)
+class Solution:
+    def rob(self, nums: List[int]) -> int:
+        if len(nums) == 1:
+            return nums[0]
+        else:
+            return max(self.hr1(nums[1:]), self.hr1(nums[:-1]))
+
+    def hr1(self, nums):
+        n = len(nums)
+        OPT = [0] * (n+1)
+        OPT[1] = nums[0]
+        for i in range(2, n+1):
+            OPT[i] = max(OPT[i-2]+nums[i-1], OPT[i-1])
+        return OPT[n]
+
+
+
+PATTERN RECOGNITION HERE:-
+# The pattern that you should realize in this one in DP is that, in that, when you are given constraints where you cannot select some part of the question, then think of 
+# applying a simpler dp answer in multiple sets instead of doing a top-down and then filtering out the results you want! In this as you can notice, the extra condition was that
+#  we had to avoid taking the first and the last house together in our solution, so instead of doing a top-down pass and then actually selecting houses that are the first one
+#  and the last one, we rather use a simpler dp solution where we solve the normal house robber problem without considering this situation and then we run this solution on the
+#  first house till the n-1th house and the 2nd house till the nth house and then we remove the max of these so one cannot take both the 1st and the last house in one chance
+#  itself.
+
+# solution 2: TC - O(n), SC- O(1)
+class Solution:
+    def rob(self, nums: List[int]) -> int:
+        return max(nums[0], self.hr1(nums[1:]), self.hr1(nums[:-1]))
+    
+    def hr1(self, nums):
+        rob1, rob2 = 0, 0
+        for num in nums:
+            newrob = max(rob1+num, rob2)
+            rob1 = rob2
+            rob2 = newrob
+        return rob2
+

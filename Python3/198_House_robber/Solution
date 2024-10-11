@@ -1,0 +1,22 @@
+# TC - O(n), SC - O(n) --> one loop till n so tc is n and one array of n size used so n sc.
+class Solution:
+    def rob(self, nums: List[int]) -> int:
+        n = len(nums)
+        if n == 1:
+            return nums[0]
+        else:
+            OPT = [0] * (n+1)
+            OPT[1] = nums[0]
+            for i in range(2,n+1):
+                OPT[i] = max(OPT[i-2]+nums[i-1], OPT[i-1])
+            return OPT[n]
+        
+
+
+# Remember to follow the steps:
+# 1- First define OPT[i] and know the difference between what OPT[i] is and what i is representing(different from OPT[i])
+# 2- then define the subproblem, try asking yourself, questions like:
+    # - How did i reach the end value, what will i have to do in order to reach here, how did i reach the last step, the last house, the last etc...
+# 3- Make the recurrence relation
+# 4- draw out the dependencies and make sure that you have got all the dependencies you need to proceed further
+# 5- Check for constraints.
