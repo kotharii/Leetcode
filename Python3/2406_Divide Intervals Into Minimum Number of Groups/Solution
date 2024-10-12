@@ -1,0 +1,15 @@
+# n log n Maybe, mostly O(n) because the constraints says that the length of the intervals can go upto 10^5
+# our solution complexities: TC - O(n log n) --> O(nlogn)from sorting the intervals according to the start times in the intervals list, and O(n) in creating the heap using leaving_times using heapify and lastly popping elements out of the heap, in the worst case scenario where all the intervals are non-overlapping then at that point the heappop operation would ALMOST reach nlogn tc and so O(nlogn) for that and so overall time compelxity comes to O(n log n)
+# SC - O(n) --> for leaving_times heap list and that is it!
+import heapq
+class Solution:
+    def minGroups(self, intervals: List[List[int]]) -> int:
+        leaving_times = [x[1] for x in intervals]
+        # sorted_intervals = sorted(intervals, key=lambda x: x[0])
+        intervals.sort(key=lambda x: x[0])
+        heapq.heapify(leaving_times)
+        for num1, num2 in intervals:
+            if leaving_times:
+                if num1 > leaving_times[0]:
+                    heapq.heappop(leaving_times)
+        return len(leaving_times)
