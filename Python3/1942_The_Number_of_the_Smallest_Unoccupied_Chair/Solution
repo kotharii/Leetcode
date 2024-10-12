@@ -1,0 +1,34 @@
+
+# Solution 1: TC - O(n log n) for the heap removal and addition in the worst case scenario
+import heapq
+class Solution:
+    def smallestChair(self, times: List[List[int]], targetFriend: int) -> int:
+        # Got the distinct arrival time so can later identify the targetFriend from this one itself
+        target = times[targetFriend][0]
+        # sorted the times list by arrival time so can take a person one by one
+        sorted_times = sorted(times, key=lambda x: x[0])
+        # creating a chair variable to be able to assign the +1th chair to a person who comes after thsi
+        chair = 0
+        # creating the two heaps cause i will need them later, one to identify the least number free chair available and the other to get the smallest leaving time first and
+        # then putting that time into the free chair heap.
+        free_chair = []
+        leaving_time_to_get_chair = []
+        heapq.heapify(free_chair)
+        heapq.heapify(leaving_time_to_get_chair)
+        # going through all the people who are coming at the party according to their arrival times
+        for i in range(len(sorted_times)):
+            while leaving_time_to_get_chair and leaving_time_to_get_chair[0][0] <= sorted_times[i][0]:
+                waste, chair_no = heapq.heappop(leaving_time_to_get_chair)
+                heapq.heappush(free_chair, chair_no)
+
+            if not free_chair:
+                heapq.heappush(leaving_time_to_get_chair, (sorted_times[i][1], chair))
+                if sorted_times[i][0] == target:
+                    return chair
+                chair += 1
+            else:
+                smallest_chair = heapq.heappop(free_chair)
+                heapq.heappush(leaving_time_to_get_chair, (sorted_times[i][1], smallest_chair))
+                if sorted_times[i][0] == target:
+                    return smallest_chair
+                
