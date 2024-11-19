@@ -1,4 +1,4 @@
-# Solution 1: TC - O(n), SC- O(n)
+# Solution 1: TC - O(n), SC- O(n) attempt 1:
 class Solution:
     def rob(self, nums: List[int]) -> int:
         if len(nums) == 1:
@@ -24,7 +24,7 @@ PATTERN RECOGNITION HERE:-
 #  first house till the n-1th house and the 2nd house till the nth house and then we remove the max of these so one cannot take both the 1st and the last house in one chance
 #  itself.
 
-# solution 2: TC - O(n), SC- O(1)
+# solution 2: TC - O(n), SC- O(1) attempt 1:
 class Solution:
     def rob(self, nums: List[int]) -> int:
         return max(nums[0], self.hr1(nums[1:]), self.hr1(nums[:-1]))
@@ -37,3 +37,38 @@ class Solution:
             rob2 = newrob
         return rob2
 
+# Solution 1: TC - O(n), SC- O(1) attempt 2:
+class Solution:
+    def rob(self, nums: List[int]) -> int:
+        n = len(nums)
+
+        def findmax(nums: List[int], n) -> int:
+            a = nums[0]
+            b = max(nums[0], nums[1])
+            if n == 2:
+                return b
+            c = 0
+            for i in range(2, n):
+                c = max(a+nums[i], b)
+                a = b
+                b = c
+            return c
+
+        if n == 1:
+            return nums[0]
+        if n == 2:
+            return max(nums[0], nums[1])
+        return max(findmax(nums[1:], n-1), findmax(nums[:-1], n-1))
+    
+# writing cleaner code for the above same solution:
+class Solution:
+    def rob(self, nums: List[int]) -> int:
+        def findmax(nums: List[int]) -> int:
+            prev_rob = max_rob = 0
+            c = 0
+            for curr_rob in nums:
+                c = max(prev_rob + curr_rob, max_rob)
+                prev_rob = max_rob
+                max_rob = c
+            return c
+        return max(findmax(nums[1:]), findmax(nums[:-1]), nums[0])
