@@ -1,4 +1,5 @@
 # TC - O(n), SC - O(n) --> one loop till n so tc is n and one array of n size used so n sc.
+# Solution 1: attempt 1:
 class Solution:
     def rob(self, nums: List[int]) -> int:
         n = len(nums)
@@ -11,7 +12,42 @@ class Solution:
                 OPT[i] = max(OPT[i-2]+nums[i-1], OPT[i-1])
             return OPT[n]
         
+# Solution 1, attempt 2:
+# OPT[i] = the maximum amount of coins that a robber can steal from the houses 1 to i
+# i = house number
+class Solution:
+    def rob(self, nums: List[int]) -> int:
+        n = len(nums)
+        if n == 1:
+            return nums[0]
+        if n == 2:
+            return max(nums[0], nums[1])
+        else:
+            OPT = [0] * (n+1)
+            OPT[1] = nums[0]
+            OPT[2] = max(nums[0], nums[1])
+            for i in range(3, n+1):
+                OPT[i] = max(OPT[i-2] + nums[i-1], OPT[i-1])
+        return OPT[n]
 
+# Solution 2, attempt 2:
+# OPT[i] = the maximum amount of coins that a robber can steal from the houses 1 to i
+# i = house number
+class Solution:
+    def rob(self, nums: List[int]) -> int:
+        n = len(nums)
+        if n == 1:
+            return nums[0]
+        if n == 2:
+            return max(nums[0], nums[1])
+        else:
+            a = nums[0]
+            b = max(nums[0], nums[1])
+            for i in range(3, n+1):
+                c = max(a+nums[i-1], b)
+                a = b
+                b = c
+        return c
 
 # Remember to follow the steps:
 # 1- First define OPT[i] and know the difference between what OPT[i] is and what i is representing(different from OPT[i])
