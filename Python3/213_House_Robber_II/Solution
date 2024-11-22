@@ -16,7 +16,7 @@ class Solution:
 
 
 
-PATTERN RECOGNITION HERE:-
+# PATTERN RECOGNITION HERE:-
 # The pattern that you should realize in this one in DP is that, in that, when you are given constraints where you cannot select some part of the question, then think of 
 # applying a simpler dp answer in multiple sets instead of doing a top-down and then filtering out the results you want! In this as you can notice, the extra condition was that
 #  we had to avoid taking the first and the last house together in our solution, so instead of doing a top-down pass and then actually selecting houses that are the first one
