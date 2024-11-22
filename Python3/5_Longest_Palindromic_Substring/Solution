@@ -1,0 +1,40 @@
+# Problem (link):- https://leetcode.com/problems/longest-palindromic-substring/description/
+# Notes-
+# 1- This is a sum which is dificult to solve if you come across it for the first time as it requires to know an approach/pattern which if not seen before is not very intuitive.
+
+# Solution 1 :-
+# TC - O(n^2) SC - O(1) -- where n is the length of the string which contains the word. Its O(n^2) only as first the for loop is iterating through all the letters in the word
+#  which is present in the string and for each letter it is calling the palindrome function and each call to the palindrome function is a O(n) call since the while loop in the
+#  worst case can go through the entire lentgh of the word, since this unction is being called twice but independently therefore in the Big O notation terms it is still O(n^2).
+class Solution:
+    def longestPalindrome(self, s: str) -> str:
+        n = len(s)
+        if n == 1:
+            return s
+        def palindrome(l,r):
+            while l >= 0 and r < n and s[l] == s[r]:    
+                l -= 1
+                r += 1
+            return l+1,r-1
+        l = r = 0
+        for i in range(n):
+            l_1, r_1 = palindrome(i,i)
+            l_2, r_2 = palindrome(i, i+1)
+            if (r_1-l_1) >= (r-l):
+                r,l = r_1,l_1
+            if (r_2-l_2) >= (r-l):
+                r,l = r_2,l_2
+        return s[l:r+1]
+    
+# Solution Methods:-
+    # 1- since the onnly way to make this a O(n^2) approach is to start from a particular letter and span outwards towards all the other letters in order to know if it is
+    #  forming a palindrome or not, so we try to do this for each letter and try to find the longest palindrome.
+    
+# Thoughts on the Problem and Challenges:-
+    
+
+# Learnings for a beginner in this problem:-
+    # 1- Learn the new pattern to ietrate through the word in order to find if its a palindrome or not
+
+# Date - 21/11/24
+# Time - 20mins
