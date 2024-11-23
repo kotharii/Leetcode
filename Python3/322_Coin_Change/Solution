@@ -1,0 +1,25 @@
+# OPT[i] = the minimum number of coins that will be needed to make up the amount
+# i = the amount that is to be achieved 
+class Solution:
+    def coinChange(self, coins: List[int], amount: int) -> int:
+        if amount == 0:
+            return 0
+        # SC - O(m) - making space complxity also pseudo polynomial
+        OPT = [float('inf')] * (amount+1)
+        # TC - O(n) - where n is the size of the coins list
+        for i in coins:
+            if i <= amount:
+                OPT[i] = 1       
+        # TC - O(m) - where m is the number of the amount--> making it pseudopolynomial time complexity
+        # since there if a loop within a loop therefore the TC would actually be O(m*n)
+        for i in range(amount+1):
+            for j in coins:
+                if i-j >= 0:
+                    OPT[i] = min(OPT[i-j] + 1, OPT[i])
+        if OPT[amount] != float('inf'):
+            return OPT[amount]
+        else:
+            return -1
+
+# Overall TC and SC is O(m*n) and O(m) respectively
+
