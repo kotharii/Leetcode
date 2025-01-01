@@ -1,0 +1,80 @@
+
+        
+
+# Problem (link):- https://leetcode.com/problems/decode-ways/description/
+
+# My Note-
+# 1- Notice as soon as you come across the word "non-decreasing order" it means that there CAN be DUPLICATES present in this.
+# 2- TC - O(m+n) since in the worst case scenario we might have to loop through all the elements in the nums1 and nums2 array(when atleast 1 nums2 element is smaller
+#  than nums1[0])
+#  SC - O(1) since we are not using any extra space than the one we are already provided by the question. (if you are confused as to why arent we considering the
+#  space that is used by nums1 and nums2's list, then you must know that space complexity is calculated based on how mucn space does the solution require which 
+# DOES NOT involve the space that is used by the question itself.
+
+# Solution 1: # TC - O(n) SC - O(n) --> since the string is being traversed once in order to consider how many ways the string can be
+#  decoded and SC is O(n) since the OPT array stores all the possible decoding ways in order to decode that string until the ith digit
+#  for a total of n digits in the string(one for each).
+# OPT[i] --> The total number of ways the digits in the string can be interpreted in
+# i --> the total number of ways the string can be decoded up until the ith digit
+class Solution:
+    def numDecodings(self, s: str) -> int:
+        n = len(s)
+        OPT = [0] * (n+1)
+        OPT[0] = 1
+        if len(s) == 0:
+            return OPT[0]
+        if s[0] == "0":
+            return 0
+        else:
+            OPT[1] = 1
+            for i in range(2, len(s)+1):
+                if s[i-1] in "123456789":
+                    OPT[i] += OPT[i-1]
+                if s[i-2] == "1" or (s[i-2] == "2" and s[i-1] in "0123456"):
+                    OPT[i] += OPT[i-2]
+            return OPT[n]
+        
+
+# Solution 2: # TC - O(n) SC - O(1) --> since the string is being traversed once in order to consider how many ways the string can be 
+# decoded and SC is O(1) since unlike the above solution in this the OPT array is not used to store the values for the possible number of
+#  ways to decode the string until the ith digit but in this since we do not need to perforn a top down approach and only need the final
+#  answer(value) we can just finish the sum after the bottom up approach and so at a particular time we just need two more variables in
+#  order to store information for the number of ways to decode the string anf so the opt array is replaced by 2 variables a and b in
+#  order to remember the number of decoded ways.
+# OPT[i] --> The total number of ways the digits in the string can be interpreted in
+# i --> the total number of ways the string can be decoded up until the ith digit
+class Solution:
+    def numDecodings(self, s: str) -> int:
+        n = len(s)
+        if len(s) == 0:
+            return 1
+        if s[0] == "0":
+            return 0
+        else:
+            a = 1
+            b = 1
+            for i in range(2, len(s)+1):
+                c = 0
+                if s[i-1] in "123456789":
+                    c += b
+                if s[i-2] == "1" or (s[i-2] == "2" and s[i-1] in "0123456"):
+                    c += a
+                
+                a = b
+                b = c
+            return b
+
+# Solution Methods:-
+    # 1- In this approach we are storing the number of ways a string can be decoded until the ith digit that we are at and if the ith
+    #  digit is not from 1-9 then we are also checking if there is a 1 or a 2 before the 0, also we check along with the zero about the
+    #  possibility of the numbers being a 2 digit number and thus increasing the number of ways the string can be decoded.
+
+# Thoughts on the Problem and Challenges:-
+    # understanding the difference between and how to calculate the "NUMBER OF WAYS" to decode and number of ways a two digit numbers
+    # togetehr next to each other can be decoded in.
+                
+# Learnings for a beginner in this problem:-
+    # 1- understand how to caulculate NUMBER OF WAYS of something.
+
+# Date - 1/1/25
+# Time - 2 hrs
