@@ -1,0 +1,43 @@
+# Problem (link):- https://leetcode.com/problems/maximum-product-subarray/description/ 
+
+# Notes-
+# 1- This is a question where you wont at first understand how to use Dynamic Programming in it, make sure to approach this question as removing edge cases, what all things
+#  are there in this questions which will affect the answer a lot in different cases, as soon as you figure this out you will be able to solve this very easily.
+
+# Solution 1: # TC - O(n) - This is because we are iterating through the array contianing the numbers twice and not within any nested loop, one when we are finding the
+#  max in the nums array to store it in res and another time when we are doing the for loop where we are constantly changing the curMax and curMin in order to find the 
+# maximum product.
+# SC - O(1) - since we are only using 4 variables where we store numbers and that get reused all the time.
+class Solution:
+    def maxProduct(self, nums: List[int]) -> int:
+        res = max(nums)
+        curMax, curMin = 1, 1
+
+        for n in nums:
+            # if n == 0:
+            #     curMax, curMin = 1, 1
+            #     continue
+            
+            temp = n * curMax
+            curMax = max(curMax * n, curMin * n, n)
+            curMin = min(temp, curMin * n, n)
+            res = max(res, curMax)
+        return res
+
+
+# Solution Methods:-
+    # 1- In this solution we maintain 3 main variables, res which will store the maximum product of any subarray that has been encounetered yet, curMax and curMin where we
+    #  are calculating the current maximum product of a subarray, this we are maintaining as if we encounter as 0 then the subarray that has to be started has to be started
+    #  from the next number that bhas been encountered after the 0 and so to also tkae into account that and we are also tracking the Curmin since we observe that if we
+    #  encounter negative numbers we will have our numbers go from maximum value to the minimum value and vice versa and so when that vice versa happens we do want to
+    #  track it cause a product which has the lowest minimum beacuse it is negative when multiplied by a negative number being currently encountered can be greater than
+    #  the highest res max we have encountered so far hence helping us find the maximum product subarray accurately.
+
+# Thoughts on the Problem and Challenges:-
+    # 1- the main challenge in this problem is to figure out how to implement exactly DP into this problem and rather to find the edge cases in order to solve it.
+
+# Learnings for a beginner in this problem:-
+    # 1- how to observe changes
+
+# Date - 02/02/26
+# Time - 1 hr
