@@ -1,0 +1,18 @@
+# OPT[i] = true or false, indicating if the word from s[:i] is in wordDict or not
+# i = the index till which the word from the start is present in the wordDict or not.
+class Solution:
+    def wordBreak(self, s: str, wordDict: List[str]) -> bool:
+        OPT = [False] * (len(s) + 1)
+        OPT[len(s)] = True
+
+        for i in range(len(s) -1, -1, -1):
+            for w in wordDict:
+                if (i + len(w) <= len(s)) and s[i:i+len(w)] == w:
+                    OPT[i] = OPT[i+len(w)]
+                if OPT[i]:
+                    break
+        return OPT[0]
+    
+
+# Time Complexity: O(n*m) and if you dive deep consdiering the worstest case scenario of the wordDict and s that are presented to us then it is O(n*m*n) which is O(n^2 * m)
+# Space Complexity: O(n)--> since only the ont opt array storing the true and false values used.
