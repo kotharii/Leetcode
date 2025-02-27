@@ -16,3 +16,25 @@ class Solution:
 
 # Time Complexity: O(n*m) and if you dive deep consdiering the worstest case scenario of the wordDict and s that are presented to us then it is O(n*m*n) which is O(n^2 * m)
 # Space Complexity: O(n)--> since only the ont opt array storing the true and false values used.
+
+
+
+
+
+# Recursive code for the same
+class Solution:
+    def wordBreak(self, s: str, wordDict: List[str]) -> bool:
+
+        def dfs(i):
+            if i == len(s):
+                return True
+            
+            for w in wordDict:
+                if ((i + len(w)) <= len(s) and 
+                     s[i : i + len(w)] == w
+                ):
+                    if dfs(i + len(w)):
+                        return True
+            return False
+        
+        return dfs(0)
