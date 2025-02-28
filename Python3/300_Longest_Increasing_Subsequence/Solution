@@ -1,0 +1,61 @@
+# OPT[i] = the value of the maxmimum length of strictly increasing longest subsequence
+# i = the maximum length of strictly increasing longest subsequence from nums[i:]
+class Solution:
+    def lengthOfLIS(self, nums: List[int]) -> int:
+        n = len(nums)
+        OPT = [1] * (n+1)
+        for i in range(n - 1, -1, -1):
+            for j in range(i+1, n):
+                if nums[j] > nums[i]:
+                    OPT[i] = max(OPT[j]+1, OPT[i])
+                else:
+                    continue
+        return max(OPT)
+    
+# Time Complexity: O(n^2)
+# Space Complexity: O(n)
+# The above code is a dynamic programming solution to the problem of finding the length of the longest increasing subsequence in a list of integers.
+# It uses a bottom-up approach, where the OPT array is filled in a way that each element represents the length of the longest increasing subsequence starting from that index.
+# The outer loop iterates through the list in reverse order, while the inner loop checks for increasing subsequences by comparing the current element with all subsequent elements.
+# The maximum length of the increasing subsequence is then returned by taking the maximum value from the OPT array.
+#
+# The time complexity of this solution is O(n^2) because of the nested loops, where n is the length of the input list.
+# The space complexity is O(n) because of the OPT array used to store the lengths of the increasing subsequences.
+
+# solution 2 
+# Binary search solution
+class Solution:
+    def lengthOfLIS(self, nums: List[int]) -> int:
+        OPT = [nums[0]]
+        def insert_within_using_binary_search(n):
+            l, r = 0, len(OPT) - 1
+            while l <= r:
+                mid = (l + r) // 2
+                if OPT[mid] < n:
+                    l = mid + 1
+                else:
+                    r = mid - 1
+
+            OPT.insert(l, n)
+
+            if l + 1 < len(OPT):
+                OPT.pop(l + 1)
+
+        for i in range(1, len(nums)):
+            if nums[i] > OPT[-1]:
+                OPT.append(nums[i])
+            else:
+                insert_within_using_binary_search(nums[i])
+        return len(OPT)
+# Time Complexity: O(nlogn)
+# Space Complexity: O(n)
+# The above code is an optimized solution to the problem of finding the length of the longest increasing subsequence in a list of integers.
+# It uses a binary search approach to maintain a list (OPT) of the smallest tail values for increasing subsequences of different lengths.
+# The insert_within_using_binary_search function finds the appropriate position to insert a new number in the OPT list while maintaining its sorted order.
+# The main loop iterates through the input list, updating the OPT list accordingly.
+# The length of the OPT list at the end gives the length of the longest increasing subsequence.
+# The time complexity of this solution is O(nlogn) due to the binary search used for insertion, where n is the length of the input list.
+# The space complexity is O(n) because of the OPT list used to store the tail values of increasing subsequences.
+# The binary search solution is more efficient than the dynamic programming solution, especially for larger input lists, as it reduces the time complexity from O(n^2) to O(nlogn).
+# The binary search solution is more efficient than the dynamic programming solution, especially for larger input lists, as it reduces the time complexity from O(n^2) to O(nlogn).
+# If you want ton undertand this code even better watch this video: https://www.youtube.com/watch?v=on2hvxBXJH4 
